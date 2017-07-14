@@ -76,7 +76,7 @@ class Fees extends Component {
   }
 
   toggleDetails(fee) {
-    this.setState({ detailsActive: !this.state.detailsActive, fee });
+    this.setState({ detailsActive: true, fee });
   }
 
   toggleForm() {

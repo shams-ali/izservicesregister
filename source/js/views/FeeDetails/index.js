@@ -7,12 +7,12 @@ const FeeDetails = ({ fee }) => (
       <thead>
         <tr>
           {_.map(fee, (prop, key) =>
-            <th>{key}</th>
+            <th key={ key }>{key}</th>
           )}
         </tr>
         <tr>
-          {_.map(fee, (val) => (
-            <th>{val}</th>
+          {_.map(fee, (val, key) => (
+            <th key={ key }>{val}</th>
         ))}
         </tr>
       </thead>

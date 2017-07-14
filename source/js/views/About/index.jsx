@@ -4,13 +4,10 @@ export default class About extends Component {
   render() {
     return (
       <div className='About'>
-        <h1>About Marvin</h1>
+        <h1>About IZ Services</h1>
 
         <p>
-          Marvin is internal project by <a href='https://work.co'>Work & Co</a>.
-          We love React and use it a lot. So Marvin is meant to be a starting point
-          for our React projects. But as we love open source too, it is publicly
-          available for anyone interested in using it.
+          Internal Project for IZ Services by Shams Ali
         </p>
         <p>
           Visit documentation

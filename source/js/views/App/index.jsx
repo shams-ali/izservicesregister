@@ -8,6 +8,7 @@ import Applications from 'views/Applications';
 import Clients from 'views/Clients';
 import Vehicles from 'views/Vehicles';
 import Fees from 'views/Fees';
+import Payments from 'views/Payments';
 import NotFound from 'views/NotFound';
 import Menu from 'components/Global/Menu';
 
@@ -20,6 +21,7 @@ export const routeCodes = {
   CLIENTS: `${ publicPath }application/:type`,
   VEHICLES: `${ publicPath }application/:type/:client_id/vehicles`,
   FEES: `${ publicPath }application/:type/:client_id/vehicles/:vehicle_id/fees`,
+  PAYMENTS: `${ publicPath }application/:type/:client_id/vehicles/:vehicle_id/fees/:fee_id/payments`,
 };
 
 export default class App extends Component {
@@ -39,7 +41,8 @@ export default class App extends Component {
               <Route exact path={ routeCodes.APPLICATIONS } component={ Applications } />
               <Route exact path={ routeCodes.CLIENTS } component={ Clients } />
               <Route exact path={ routeCodes.VEHICLES } component={ Vehicles } />
-              <Route path={ routeCodes.FEES } component={ Fees } />
+              <Route exact path={ routeCodes.FEES } component={ Fees } />
+              <Route exact path={ routeCodes.PAYMENTS } component={ Payments } />
               <Route path='*' component={ NotFound } />
             </Switch>
           </div>

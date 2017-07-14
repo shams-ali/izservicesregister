@@ -13,22 +13,14 @@ class Payments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      payments: {},
+      payments: [],
       payment: null,
       formActive: false,
       detailsActive: false,
     };
     this.questions = {
-      dmv_payment: {},
-      dmv_payment2: {},
-      service_payment: {},
-      other_payment: {},
-      extra_discount: {},
-      old_post_payment: {},
-      ros_bos: {},
-      ros_num: {},
-      tax: {},
-      vehicle_tax: {},
+      type: {},
+      amount: {},
     };
     this.createPayment = this.createPayment.bind(this);
     this.deletePayment = this.deletePayment.bind(this);
@@ -41,29 +33,30 @@ class Payments extends Component {
   }
 
   getPayments() {
-    axios.get(`/v1/payments?payment_id=${ this.props.params.payment_id }`)
+    axios.get(`http://localhost:8080/v1/payments?fee_id=${ this.props.match.params.fee_id }`)
       .then(({ data: { data } }) => this.setState({ payments: data }))
       .catch((error) => console.error(error));
   }
 
   createPayment(e) {
+    // e.preventDefault();
     const data = _.reduce(e.target, (memo, value) => {
       memo[value.name] = value.value;
       return memo;
     }, {});
-    data.total_amount = _.reduce(e.target, (memo, value) =>
-      value.name === 'extra_discount' ? memo - value.value : memo + value.value, 0);
-    data.vehicle_id = this.props.params.vehicle_id;
-    data.client_id = this.props.params.client_id;
-    data.total_outstanding = data.total_amount;
+
+    data.vehicle_id = this.props.match.params.vehicle_id;
+    data.client_id = this.props.match.params.client_id;
+    data.fee_id = this.props.match.params.fee_id;
+
     JSON.stringify(data);
-    axios.post('/v1/payments', data)
+    axios.post('http://localhost:8080/v1/payments', data)
       .then(response => console.warn('saved successfully', response))
       .catch(error => console.error(error));
   }
 
   deletePayment({ target: { value } }) {
-    axios.delete(`/v1/payments/${ value }`)
+    axios.delete(`http://localhots:8080/v1/payments/${ value }`)
       .then(({ data }) => alert('User Deleted Successfully', data))
       .catch(error => alert(error));
     // TODO: force refresh
@@ -83,8 +76,8 @@ class Payments extends Component {
         <table className='table table-condensed'>
           <thead>
             <tr>
-              <th>Total Amount</th>
-              <th>Total Outstanding</th>
+              <th>Type</th>
+              <th>Amount</th>
               <th>Date</th>
               <th />
               <th />
@@ -92,10 +85,10 @@ class Payments extends Component {
             </tr>
           </thead>
           <tbody>
-            {_.map(this.state.payments, (payment, i) => (
+            {this.state.payments.map((payment, i) => (
               <tr key={ payment.id }>
-                <td>${payment.total_amount}</td>
-                <td>${payment.total_outstanding}</td>
+                <td>{payment.type}</td>
+                <td>${payment.amount}</td>
                 <td>{payment.created_at}</td>
                 <td>
                   <button
@@ -106,17 +99,6 @@ class Payments extends Component {
                     onClick={ (e) => confirm('Delete Payment?') && this.deletePayment(e) }
                   >
                   Delete Payment
-                </button>
-                </td>
-                <td>
-                  <button
-                    className='btn btn-primary btn-sm'
-                    key={ i }
-                    id={ `enter${ payment.id }` }
-                    value={ payment.id }
-                    onClick={ this.goPayments }
-                  >
-                  Make Payment
                 </button>
                 </td>
                 <td>
@@ -149,7 +131,7 @@ class Payments extends Component {
 }
 
 Payments.propTypes = {
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 export default Payments;

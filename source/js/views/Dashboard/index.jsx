@@ -51,9 +51,9 @@ export default class Dashboard extends Component {
 
     return (
       <div className='Dashboard'>
-        <h1>Marvin</h1>
+        <h1>IZ Services</h1>
         <p>
-          Boilerplate for kicking off React/Redux applications.
+          Vehicle Resgistration
         </p>
 
         <hr />
