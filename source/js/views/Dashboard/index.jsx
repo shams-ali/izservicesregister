@@ -11,6 +11,7 @@ import bookImg from '../../../assets/img/book2.jpg';
   asyncLoading: state.app.get('asyncLoading'),
   counter: state.app.get('counter'),
 }))
+
 export default class Dashboard extends Component {
   static propTypes = {
     asyncData: PropTypes.string,
