@@ -74,6 +74,14 @@ class Vehicles extends Component {
   render() {
     return (
       <div>
+        {this.state.formActive ?
+          <FormContainer
+            type='Vehicle'
+            create={ this.createVehicle }
+            questions={ this.questions }
+            toggleForm={ this.toggleForm }
+          /> : <button className='btn btn-default pull-right' onClick={ this.toggleForm }>Add A New Vehicle</button>
+        }
         <table className='table table-condensed'>
           <thead>
             <tr>
@@ -138,14 +146,7 @@ class Vehicles extends Component {
           }
           </tbody>
         </table>
-        {this.state.formActive ?
-          <FormContainer
-            type='Vehicle'
-            create={ this.createVehicle }
-            questions={ this.questions }
-            toggleForm={ this.toggleForm }
-          /> : <button onClick={ this.toggleForm }>Add A New Vehicle</button>
-        }
+
       </div>
     );
   }
