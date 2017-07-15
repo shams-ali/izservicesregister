@@ -3,19 +3,27 @@
 /* eslint no-confirm: off */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
+import { getClientsAsync } from 'actions/app';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import FormContainer from 'components/Global/FormContainer';
 
+@connect(state => ({ clients: state.app.get('clients') }))
+
 class Clients extends Component {
+  static propTypes = {
+    clients: PropTypes.array,
+    dispatch: PropTypes.func,
+  }
 
   constructor(props) {
     super(props);
     this.state = {
       clients: [],
-      vehicles: {},
       addClientActive: false,
     };
     this.questions = {
@@ -35,20 +43,15 @@ class Clients extends Component {
         validations: ['zip'],
       },
     };
-    this.getClients = this.getClients.bind(this);
+    
     this.createClient = this.createClient.bind(this);
     this.deleteClient = this.deleteClient.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
   }
 
   componentDidMount() {
-    this.getClients();
-  }
-
-  getClients() {
-    axios.get('/api/v1/clients')
-      .then(({ data: { data } }) => this.setState({ clients: data }))
-      .catch((error) => console.error(error));
+    const { dispatch } = this.props;
+    dispatch(getClientsAsync('/api/v1/clients'));
   }
 
   createClient(e) {
@@ -74,6 +77,7 @@ class Clients extends Component {
   }
 
   render() {
+    const { clients } = this.props;
     return (
       <div>
         {this.state.addClientActive ?
@@ -95,7 +99,7 @@ class Clients extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.clients.map((client, i) => (
+            {clients.map((client, i) => (
               <tr key={ client.id }>
                 <td>{`${ client.name }`}</td>
                 <td>{client.dealer}</td>
