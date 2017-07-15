@@ -1,3 +1,4 @@
+require('dotenv').config();
 const webpack = require('webpack');
 const path = require('path');
 
@@ -16,6 +17,8 @@ const imgPath = path.join(__dirname, './source/assets/img');
 const iconPath = path.join(__dirname, './source/assets/icons');
 const sourcePath = path.join(__dirname, './source');
 
+const API_SERVER_URL = process.env.API_SERVER_URL;
+const PORT = process.env.PORT || 8080;
 
 // Common plugins
 const plugins = [
@@ -169,7 +172,7 @@ module.exports = {
   devServer: {
     contentBase: isProduction ? buildPath : sourcePath,
     historyApiFallback: true,
-    port: 8080,
+    port: PORT,
     compress: isProduction,
     inline: !isProduction,
     hot: !isProduction,
@@ -177,7 +180,7 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       '/api/*': {
-        target: 'http://localhost:3000/',
+        target: API_SERVER_URL,
         changeOrigin: true,
         pathRewrite: {
           '^/api': '',
