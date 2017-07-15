@@ -5,14 +5,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { getClientsAsync } from 'actions/app';
+import { getClientsAsync } from 'actions/client';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import FormContainer from 'components/Global/FormContainer';
+import ClientList from 'components/Client/ClientList';
 
-@connect(state => ({ clients: state.app.get('clients') }))
+@connect(state => ({ clients: state.client.get('clients') }))
 
 class Clients extends Component {
   static propTypes = {
@@ -23,7 +24,6 @@ class Clients extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clients: [],
       addClientActive: false,
     };
     this.questions = {
@@ -43,7 +43,7 @@ class Clients extends Component {
         validations: ['zip'],
       },
     };
-    
+
     this.createClient = this.createClient.bind(this);
     this.deleteClient = this.deleteClient.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
@@ -98,38 +98,12 @@ class Clients extends Component {
               <th />
             </tr>
           </thead>
-          <tbody>
-            {clients.map((client, i) => (
-              <tr key={ client.id }>
-                <td>{`${ client.name }`}</td>
-                <td>{client.dealer}</td>
-                <td>{moment(client.created_at).format('h:mmA')}</td>
-                <td>
-                  <button
-                    className='btn btn-primary btn-sm'
-                    key={ client.id }
-                    id={ client.id }
-                    value={ client.id }
-                    onClick={ (e) => confirm('Delete Client?') && this.deleteClient(e) }
-                  >
-                  Delete Client
-                </button>
-                </td>
-                <td>
-                  <NavLink
-                    to={ `/application/client/${ client.id }/vehicles` }
-                    className='btn btn-primary btn-sm'
-                    key={ i }
-                    id={ `enter${ client.id }` }
-                    value={ client.id }
-                  >
-                  View Vehicles
-                </NavLink>
-                </td>
-              </tr>
-            ))
-          }
-          </tbody>
+          <ClientList
+            clients={ clients }
+            deleteClient={ this.deleteClient }
+            toggleForm={ this.toggleForm }
+            createClient={ this.createClient }
+          />
         </table>
       </div>
 
