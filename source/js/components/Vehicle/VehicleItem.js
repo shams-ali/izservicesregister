@@ -64,7 +64,7 @@ const VehicleItem = ({ vehicle, clientId }) => (
 
 VehicleItem.propTypes = {
   vehicle: PropTypes.object,
-  clientId: PropTypes.string,
+  clientId: PropTypes.number,
 };
 
 export default VehicleItem;

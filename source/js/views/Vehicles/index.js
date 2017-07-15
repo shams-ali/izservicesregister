@@ -89,9 +89,9 @@ class Vehicles extends Component {
               <th />
             </tr>
           </thead>
-          <VehicleList 
+          <VehicleList
             vehicles={ vehicles }
-            clientId={ this.props.match.params.clientId }
+            clientId={ +this.props.match.params.clientId }
           />
         </table>
       </div>

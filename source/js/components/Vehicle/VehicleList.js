@@ -18,7 +18,7 @@ const VehicleList = ({ vehicles, clientId }) => {
 
 VehicleList.propTypes = {
   vehicles: PropTypes.array.isRequired,
-  clientId: PropTypes.string,
+  clientId: PropTypes.number.isRequired,
 };
 
 export default VehicleList;

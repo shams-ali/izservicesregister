@@ -2,10 +2,10 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
 import ClientItem from 'components/Client/ClientItem';
+import VehicleItem from 'components/Vehicle/VehicleItem';
 
 class Search extends Component {
   constructor(props) {
@@ -98,11 +98,10 @@ class Search extends Component {
 
   renderVINSuggestion(suggestion) {
     return (
-      <NavLink
-        to={ `/application/search/${ suggestion.client.id }/vehicles/` }
-      >
-        {suggestion.vin}
-      </NavLink>
+      <VehicleItem
+        vehicle={ suggestion }
+        clientId={ suggestion.client.id }
+      />
     );
   }
 

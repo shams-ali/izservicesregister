@@ -43,7 +43,7 @@ const ClientItem = ({ client }) => (
 );
 
 ClientItem.propTypes = {
-  client: PropTypes.object.isRequired,
+  client: PropTypes.object,
 };
 
 export default ClientItem;
