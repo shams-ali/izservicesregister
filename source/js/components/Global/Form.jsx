@@ -71,17 +71,31 @@ class Form extends React.Component {
         <div className='text-center'>
           <h3>Add A New {this.props.type}</h3>
           <Validation.components.Form ref={ c => { this.form = c; } } onSubmit={ this.props.create }>
-            {_.map(this.props.questions, (props, name) => (
+            {_.map(this.props.questions, (question, name) => (
               <div key={ name } className='form-group'>
-                <Validation.components.Input
-                  className='form-control'
-                  value={ props.value || '' }
-                  placeholder={ name || '' }
-                  onFocus={ props.onFocus || '' }
-                  name={ name }
-                  type={ props.type }
-                  validations={ props.validations || [] }
-                />
+                {question.options ?
+                  <Validation.components.Select
+                    className='form-control'
+                    value={ question.value || '' }
+                    placeholder={ name || '' }
+                    onFocus={ question.onFocus || '' }
+                    name={ name }
+                    type={ question.type }
+                    validations={ question.validations || [] }
+                  >
+                    {question.options.map(option => <option key={ option } value={ option }>{option}</option>)}
+                  </Validation.components.Select>
+                    :
+                  <Validation.components.Input
+                    className='form-control'
+                    value={ question.value || '' }
+                    placeholder={ name || '' }
+                    onFocus={ question.onFocus || '' }
+                    name={ name }
+                    type={ question.type }
+                    validations={ question.validations || [] }
+                  />
+                }
               </div>
             ))}
             <div className='form-group'>

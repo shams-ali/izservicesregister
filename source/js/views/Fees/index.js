@@ -5,6 +5,7 @@
 /* eslint max-len: ["error", 150]*/
 
 import React, { PropTypes, Component } from 'react';
+import _ from 'lodash';
 import axios from 'axios';
 import FormContainer from 'components/Global/FormContainer';
 import RenderFees from 'components/Global/RenderFees';
@@ -35,7 +36,6 @@ class Fees extends Component {
     };
 
     this.createFee = this.createFee.bind(this);
-    this.deleteFee = this.deleteFee.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
     this.toggleDetails = this.toggleDetails.bind(this);
   }
@@ -68,13 +68,6 @@ class Fees extends Component {
     axios.post('http://localhost:8080/v1/fees', data)
       .then(response => console.warn('saved successfully', response))
       .catch(error => console.error(error));
-  }
-
-  deleteFee({ target: { value } }) {
-    axios.delete(`http://localhost:8080/v1/fees/${ value }`)
-      .then(({ data }) => alert('User Deleted Successfully', data))
-      .catch(error => alert(error));
-    // TODO: force refresh
   }
 
   toggleDetails(fee) {
@@ -112,6 +105,7 @@ class Fees extends Component {
                   fee={ fee }
                   client_id={ client_id }
                   vehicle_id={ vehicle_id }
+                  toggleDetails={ this.toggleDetails }
                 />
             )}
           </tbody>

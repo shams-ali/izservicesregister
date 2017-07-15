@@ -4,6 +4,7 @@
 /* eslint "no-confusing-arrow": off */
 
 import React, { PropTypes, Component } from 'react';
+import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import _ from 'lodash';
 import FormContainer from 'components/Global/FormContainer';
@@ -15,6 +16,7 @@ class Payments extends Component {
     this.state = {
       payments: [],
       payment: null,
+      originalAmount: null,
       formActive: false,
       detailsActive: false,
     };
@@ -30,6 +32,7 @@ class Payments extends Component {
 
   componentDidMount() {
     this.getPayments();
+    this.getFee();
   }
 
   getPayments() {
@@ -38,8 +41,13 @@ class Payments extends Component {
       .catch((error) => console.error(error));
   }
 
+  getFee() {
+    axios.get(`http://localhost:8080/v1/fees?id=${ this.props.match.params.fee_id }`)
+      .then(({ data: { data } }) => this.setState({ originalAmount: data[0].total_amount }))
+      .catch((error) => console.error(error));
+  }
+
   createPayment(e) {
-    // e.preventDefault();
     const data = _.reduce(e.target, (memo, value) => {
       memo[value.name] = value.value;
       return memo;
@@ -56,10 +64,9 @@ class Payments extends Component {
   }
 
   deletePayment({ target: { value } }) {
-    axios.delete(`http://localhots:8080/v1/payments/${ value }`)
-      .then(({ data }) => alert('User Deleted Successfully', data))
+    axios.delete(`http://localhost:8080/v1/payments/${ value }`)
+      .then(({ data }) => alert('Payment Deleted Successfully', data))
       .catch(error => alert(error));
-    // TODO: force refresh
   }
 
   toggleDetails(payment) {
@@ -71,8 +78,11 @@ class Payments extends Component {
   }
 
   render() {
+    const { originalAmount, payments } = this.state;
     return (
       <div>
+        <div>Original Amount: ${originalAmount}</div>
+        <div>Outstanding Balance: ${originalAmount - payments.reduce((t, p) => p.amount + t, 0)}</div>
         <table className='table table-condensed'>
           <thead>
             <tr>
@@ -102,21 +112,20 @@ class Payments extends Component {
                 </button>
                 </td>
                 <td>
-                  <button
+                  <NavLink
+                    to={ `/receipt/${ payment.id }` }
                     className='btn btn-primary btn-sm'
-                    key={ i }
                     id={ `enter${ payment.id }` }
                     value={ payment.id }
-                    onClick={ () => this.toggleDetails(payment) }
                   >
-                  Details
-                </button>
+                  Get Reciept
+                </NavLink>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {/* {this.state.detailsActive ? <PaymentDetails payment={this.state.payment} /> : null} */}
+        {/*{this.state.detailsActive ? <PaymentDetails payment={this.state.payment} /> : null} */}
         {this.state.formActive ?
           <FormContainer
             type='Payment'

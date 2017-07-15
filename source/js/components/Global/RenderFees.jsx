@@ -13,7 +13,10 @@ class RenderFees extends Component {
     super(props);
     this.state = {
       totalPaid: null,
+      detailsActive: false,
     };
+
+    this.deleteFee = this.deleteFee.bind(this);
   }
 
   componentDidMount() {
@@ -27,8 +30,15 @@ class RenderFees extends Component {
       .catch((error) => console.error(error));
   }
 
+  deleteFee({ target: { value } }) {
+    axios.delete(`http://localhost:8080/v1/fees/${ value }`)
+      .then(({ data }) => alert('User Deleted Successfully', data))
+      .catch(error => alert(error));
+    // TODO: force refresh
+  }
+
   render() {
-    const { fee } = this.props;
+    const { fee, toggleDetails } = this.props;
     return (
       <tr key={ fee.id }>
         <td>${fee.total_amount}</td>
@@ -60,7 +70,7 @@ class RenderFees extends Component {
             className='btn btn-primary btn-sm'
             id={ `enter${ fee.id }` }
             value={ fee.id }
-            onClick={ () => this.toggleDetails(fee) }
+            onClick={ () => toggleDetails(fee) }
           >
           Details
         </button>

@@ -9,6 +9,7 @@ import Clients from 'views/Clients';
 import Vehicles from 'views/Vehicles';
 import Fees from 'views/Fees';
 import Payments from 'views/Payments';
+import Receipt from 'views/Receipt';
 import NotFound from 'views/NotFound';
 import Menu from 'components/Global/Menu';
 
@@ -22,6 +23,7 @@ export const routeCodes = {
   VEHICLES: `${ publicPath }application/:type/:client_id/vehicles`,
   FEES: `${ publicPath }application/:type/:client_id/vehicles/:vehicle_id/fees`,
   PAYMENTS: `${ publicPath }application/:type/:client_id/vehicles/:vehicle_id/fees/:fee_id/payments`,
+  RECEIPT: `${ publicPath }receipt/:id`,
 };
 
 export default class App extends Component {
@@ -43,6 +45,7 @@ export default class App extends Component {
               <Route exact path={ routeCodes.VEHICLES } component={ Vehicles } />
               <Route exact path={ routeCodes.FEES } component={ Fees } />
               <Route exact path={ routeCodes.PAYMENTS } component={ Payments } />
+              <Route exact path={ routeCodes.RECEIPT } component={ Receipt } />
               <Route path='*' component={ NotFound } />
             </Switch>
           </div>
