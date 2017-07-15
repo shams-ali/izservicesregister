@@ -1,6 +1,7 @@
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+
 import React, { PropTypes, Component } from 'react';
 import axios from 'axios';
-import _ from 'lodash';
 
 class Receipt extends Component {
 
@@ -16,10 +17,12 @@ class Receipt extends Component {
   }
 
   componentDidMount() {
+    console.log('hello');
     this.getPayment(this.props.match.params.id);
   }
 
   getPayment(id) {
+    console.log(id);
     axios.get(`/api/v1/payments?id=${ id }`)
       .then(({ data: { data } }) => this.setState({ payment: data[0] }))
       .catch((error) => console.error(error));
@@ -27,10 +30,14 @@ class Receipt extends Component {
 
   render() {
     return (<div>
-    { this.state.payment ? <div>{this.state.payment.amount}</div> : null}
+      { this.state.payment ? <div>{this.state.payment.amount}</div> : 'hi'}
     </div>);
   }
 
 }
+
+// Receipt.propTypes = {
+//   match: PropTypes.object.isRequired,
+// };
 
 export default Receipt;

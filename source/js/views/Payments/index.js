@@ -2,9 +2,9 @@
 /* eslint no-alert: off */
 /* eslint no-confirm: off */
 /* eslint "no-confusing-arrow": off */
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 import React, { PropTypes, Component } from 'react';
-import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import _ from 'lodash';
 import FormContainer from 'components/Global/FormContainer';
@@ -37,14 +37,16 @@ class Payments extends Component {
   }
 
   getPayments() {
-    axios.get(`/api/v1/payments?vehicle_id=${ this.props.match.params.vehicle_id }`)
-      .then(({ data: { data } }) => this.setState({ payments: data, totalPayments: data.reduce((t, p) => t + +p.amount, 0) }))
+    axios.get(`/api/v1/payments?vehicle_id=${ this.props.match.params.vehicleId }`)
+      .then(({ data: { data } }) =>
+        this.setState({ payments: data, totalPayments: data.reduce((t, p) => t + +p.amount, 0) }))
       .catch((error) => console.error(error));
   }
 
   getFees() {
-    axios.get(`/api/v1/fees?vehicle_id=${ this.props.match.params.vehicle_id }`)
-      .then(({ data: { data } }) => this.setState({ totalFees: data.reduce((t, f) => t + +f.total_amount, 0) }))
+    axios.get(`/api/v1/fees?vehicle_id=${ this.props.match.params.vehicleId }`)
+      .then(({ data: { data } }) =>
+        this.setState({ totalFees: data.reduce((t, f) => t + +f.total_amount, 0) }))
       .catch((error) => console.error(error));
   }
 
@@ -94,7 +96,7 @@ class Payments extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.payments.map((payment, i) => (
+            {this.state.payments.map(payment => (
               <tr key={ payment.id }>
                 <td>{payment.type}</td>
                 <td>${payment.amount}</td>
@@ -114,8 +116,8 @@ class Payments extends Component {
             ))}
           </tbody>
         </table>
-        <div>Total Payments: {totalPayments}</div>
         <div>Total Fees: {totalFees}</div>
+        <div>Total Payments: {totalPayments}</div>
         {this.state.formActive ?
           <FormContainer
             type='Payment'

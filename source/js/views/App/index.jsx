@@ -20,9 +20,9 @@ export const routeCodes = {
   ABOUT: `${ publicPath }about`,
   APPLICATIONS: `${ publicPath }applications`,
   CLIENTS: `${ publicPath }application/:type`,
-  VEHICLES: `${ publicPath }application/:type/:client_id/vehicles`,
-  FEES: `${ publicPath }application/:type/:client_id/vehicles/:vehicle_id/fees`,
-  PAYMENTS: `${ publicPath }application/:type/:client_id/vehicles/:vehicle_id/payments`,
+  VEHICLES: `${ publicPath }application/:type/:clientId/vehicles`,
+  FEES: `${ publicPath }application/:type/:clientId/vehicles/:vehicleId/fees`,
+  PAYMENTS: `${ publicPath }application/:type/:clientId/vehicles/:vehicleId/payments`,
   RECEIPT: `${ publicPath }receipt/:id`,
 };
 

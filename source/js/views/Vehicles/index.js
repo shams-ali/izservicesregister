@@ -2,6 +2,7 @@
 /* eslint no-alert: off */
 /* eslint no-confirm: off */
 /* eslint max-len: ["error", 200] */
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 import React, { PropTypes, Component } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -42,7 +43,7 @@ class Vehicles extends Component {
   }
 
   getVehicles() {
-    axios.get(`/api/v1/vehicles?client_id=${ this.props.match.params.client_id }`)
+    axios.get(`/api/v1/vehicles?client_id=${ this.props.match.params.clientId }`)
       .then(({ data: { data } }) => this.setState({ vehicles: data }))
       .catch((error) => console.error(error));
   }
@@ -52,7 +53,7 @@ class Vehicles extends Component {
       memo[value.name] = value.value;
       return memo;
     }, {});
-    data.client_id = this.props.match.params.client_id;
+    data.client_id = this.props.match.params.clientId;
     JSON.stringify(data);
     axios.post('/v1/vehicles', data)
       .then(response => console.warn('saved successfully', response))
@@ -104,10 +105,9 @@ class Vehicles extends Component {
                 </td>
                 <td>
                   <NavLink
-                    to={ `/application/client/${ this.props.match.params.client_id }/vehicles/${ vehicle.id }/fees` }
+                    to={ `/application/client/${ this.props.match.params.clientId }/vehicles/${ vehicle.id }/fees` }
                     className='btn btn-primary btn-sm'
-                    key={ i }
-                    id={ `enter${ vehicle.id }` }
+                    id={ `${ vehicle.id }` }
                     value={ vehicle.id }
                   >
                   View Fees
@@ -115,9 +115,9 @@ class Vehicles extends Component {
                 </td>
                 <td>
                   <NavLink
-                    to={ `/application/client/${ this.props.match.params.client_id }/vehicles/${ vehicle.id }/payments` }
+                    to={ `/application/client/${ this.props.match.params.clientId }/vehicles/${ vehicle.id }/payments` }
                     className='btn btn-primary btn-sm'
-                    id={ `enter${ vehicle.id }` }
+                    id={ `${ vehicle.id }` }
                     value={ vehicle.id }
                   >
                     View Payments
@@ -127,7 +127,7 @@ class Vehicles extends Component {
                   <NavLink
                     to={ `/receipt/${ vehicle.id }` }
                     className='btn btn-primary btn-sm'
-                    id={ `enter${ vehicle.id }` }
+                    id={ `${ vehicle.id }` }
                     value={ vehicle.id }
                   >
                   Get Reciept

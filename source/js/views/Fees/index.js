@@ -3,6 +3,7 @@
 /* eslint no-confirm: off */
 /* eslint "no-confusing-arrow": off */
 /* eslint max-len: ["error", 150]*/
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
@@ -48,13 +49,13 @@ class Fees extends Component {
   }
 
   getPayments() {
-    axios.get(`/api/v1/payments?vehicle_id=${ this.props.match.params.vehicle_id }`)
+    axios.get(`/api/v1/payments?vehicle_id=${ this.props.match.params.vehicleId }`)
       .then(({ data: { data } }) => this.setState({ totalPayments: data.reduce((t, p) => t + +p.amount, 0) }))
       .catch((error) => console.error(error));
   }
 
   getFees() {
-    axios.get(`/api/v1/fees?vehicle_id=${ this.props.match.params.vehicle_id }`)
+    axios.get(`/api/v1/fees?vehicle_id=${ this.props.match.params.vehicleId }`)
       .then(({ data: { data } }) => {
         this.setState({ fees: data, totalFees: data.reduce((t, f) => t + +f.total_amount, 0) });
       })
@@ -92,7 +93,6 @@ class Fees extends Component {
   }
 
   render() {
-    const { client_id, vehicle_id } = this.props.match.params;
     const { totalPayments, totalFees } = this.state;
     return (
       <div>
@@ -113,13 +113,13 @@ class Fees extends Component {
                 <RenderFees
                   key={ i }
                   fee={ fee }
-                  client_id={ client_id }
-                  vehicle_id={ vehicle_id }
                   toggleDetails={ this.toggleDetails }
                 />
             )}
           </tbody>
         </table>
+        <div>Total Fees: {totalFees}</div>
+        <div>Total Payments: {totalPayments}</div>
         {this.state.detailsActive ? <FeeDetails fee={ this.state.fee } /> : null}
         {this.state.formActive ?
           <FormContainer
