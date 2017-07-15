@@ -63,7 +63,7 @@ export default class Dashboard extends Component {
         <h3>Synchronous action</h3>
         <div className='Example'>
           <p>Counter: { counter }</p>
-          <button onClick={ this.handleTestButtonClick }>
+          <button className="btn btn-default" onClick={ this.handleTestButtonClick }>
             Increase
           </button>
         </div>
@@ -74,6 +74,7 @@ export default class Dashboard extends Component {
           { asyncLoading && <p>Loading...</p> }
           { asyncError && <p>Error: { asyncError }</p> }
           <button
+            className="btn btn-default"
             disabled={ asyncLoading }
             onClick={ this.handleAsyncButtonClick }
           >

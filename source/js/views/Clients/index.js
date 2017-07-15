@@ -125,7 +125,7 @@ class Clients extends Component {
             create={ this.createClient }
             questions={ this.questions }
             toggleForm={ this.toggleForm }
-          /> : <button onClick={ this.toggleForm }>Add A New Client</button>
+          /> : <button onClick={ this.toggleForm }>Add a new client</button>
         }
       </div>
 
