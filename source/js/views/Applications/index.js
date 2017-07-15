@@ -7,7 +7,7 @@ class Applications extends Component {
   constructor(props) {
     super(props);
     this.applications = [
-      { link: 'Application', title: 'Walk-In Application' },
+      { link: 'Application', title: 'Application' },
       // { link: 'dealer', title: 'Dealer Application' },
       // { link: 'chart', title: 'Outstanding Chart' },
       { link: 'search', title: 'Search' },
