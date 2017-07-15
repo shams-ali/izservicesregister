@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Dashboard from 'views/Dashboard';
 import About from 'views/About';
 import Applications from 'views/Applications';
+import Search from 'components/Search';
 import Clients from 'views/Clients';
 import Vehicles from 'views/Vehicles';
 import Fees from 'views/Fees';
@@ -19,6 +20,7 @@ export const routeCodes = {
   DASHBOARD: publicPath,
   ABOUT: `${ publicPath }about`,
   APPLICATIONS: `${ publicPath }applications`,
+  SEARCH: `${ publicPath }application/search`,
   CLIENTS: `${ publicPath }application/:type`,
   VEHICLES: `${ publicPath }application/:type/:clientId/vehicles`,
   FEES: `${ publicPath }application/:type/:clientId/vehicles/:vehicleId/fees`,
@@ -37,12 +39,13 @@ export default class App extends Component {
         <div className='App'>
           <Menu />
           <div className='container'>
-            <div className="row">
-              <div className="col-md-12">
+            <div className='row'>
+              <div className='col-md-12'>
                 <Switch>
                   <Route exact path={ publicPath } component={ Dashboard } />
                   <Route path={ routeCodes.ABOUT } component={ About } />
                   <Route exact path={ routeCodes.APPLICATIONS } component={ Applications } />
+                  <Route exact path={ routeCodes.SEARCH } component={ Search } />
                   <Route exact path={ routeCodes.CLIENTS } component={ Clients } />
                   <Route exact path={ routeCodes.VEHICLES } component={ Vehicles } />
                   <Route exact path={ routeCodes.FEES } component={ Fees } />

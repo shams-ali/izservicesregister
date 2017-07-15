@@ -10,6 +10,7 @@ class Applications extends Component {
       { link: 'walkin', title: 'Walk-In Application' },
       { link: 'dealer', title: 'Dealer Application' },
       { link: 'chart', title: 'Outstanding Chart' },
+      { link: 'search', title: 'Search' },
     ];
   }
 

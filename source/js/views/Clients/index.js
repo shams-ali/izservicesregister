@@ -1,15 +1,14 @@
 /* eslint no-param-reassign: off */
 /* eslint no-alert: off */
 /* eslint no-confirm: off */
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { getClientsAsync } from 'actions/client';
 import _ from 'lodash';
-import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import FormContainer from 'components/Global/FormContainer';
 import ClientList from 'components/Client/ClientList';
 

@@ -9,7 +9,7 @@ const Dashboard = () => (
     </p>
 
     <hr />
-    <img src={ bookImg } />
+    <img src={ bookImg } alt='img' />
   </div>
 );
 
