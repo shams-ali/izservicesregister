@@ -9,7 +9,7 @@ export default class Menu extends Component {
       <nav className='navbar navbar-inverse navbar-fixed-top'>
         <div className="container">
           <div className='Menu-links'>
-            <div class="navbar-header">
+            <div className="navbar-header">
               <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span className="sr-only">Toggle navigation</span>
                 <span className="icon-bar"></span>
@@ -25,7 +25,7 @@ export default class Menu extends Component {
 
             <div id="navbar" className="navbar-collapse collapse navbar-right">
               <ul className="nav navbar-nav">
-                <li className="active">
+                <li>
                   <NavLink
                     activeClassName='Menu-link--active'
                     className='Menu-link'

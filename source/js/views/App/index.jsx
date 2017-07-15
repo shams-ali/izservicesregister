@@ -36,18 +36,22 @@ export default class App extends Component {
       <BrowserRouter>
         <div className='App'>
           <Menu />
-          <div className='Page'>
-            <Switch>
-              <Route exact path={ publicPath } component={ Dashboard } />
-              <Route path={ routeCodes.ABOUT } component={ About } />
-              <Route exact path={ routeCodes.APPLICATIONS } component={ Applications } />
-              <Route exact path={ routeCodes.CLIENTS } component={ Clients } />
-              <Route exact path={ routeCodes.VEHICLES } component={ Vehicles } />
-              <Route exact path={ routeCodes.FEES } component={ Fees } />
-              <Route exact path={ routeCodes.PAYMENTS } component={ Payments } />
-              <Route exact path={ routeCodes.RECEIPT } component={ Receipt } />
-              <Route path='*' component={ NotFound } />
-            </Switch>
+          <div className='container'>
+            <div className="row">
+              <div className="col-md-12">
+                <Switch>
+                  <Route exact path={ publicPath } component={ Dashboard } />
+                  <Route path={ routeCodes.ABOUT } component={ About } />
+                  <Route exact path={ routeCodes.APPLICATIONS } component={ Applications } />
+                  <Route exact path={ routeCodes.CLIENTS } component={ Clients } />
+                  <Route exact path={ routeCodes.VEHICLES } component={ Vehicles } />
+                  <Route exact path={ routeCodes.FEES } component={ Fees } />
+                  <Route exact path={ routeCodes.PAYMENTS } component={ Payments } />
+                  <Route exact path={ routeCodes.RECEIPT } component={ Receipt } />
+                  <Route path='*' component={ NotFound } />
+                </Switch>
+              </div>
+            </div>
           </div>
         </div>
       </BrowserRouter>
