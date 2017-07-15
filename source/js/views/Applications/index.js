@@ -21,7 +21,7 @@ class Applications extends Component {
             <div className='col-md-12 text-center'>
               <h3>Welcome to the Registration Invoice Generator</h3>
 
-              <h3>What do you need help with?</h3>
+              <h4>What do you need help with?</h4><br />
               {this.applications.map((application, index) => (
                 <div key={ application.title }>
                   <NavLink to={ `application/${ application.link }` } className='btn btn-default btn-lg btn-block' key={ index } >
