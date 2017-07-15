@@ -76,6 +76,14 @@ class Clients extends Component {
   render() {
     return (
       <div>
+        {this.state.addClientActive ?
+          <FormContainer
+            type='Client'
+            create={ this.createClient }
+            questions={ this.questions }
+            toggleForm={ this.toggleForm }
+          /> : <button className='btn btn-default pull-right' onClick={ this.toggleForm }>Add a new client</button>
+        }
         <table className='table table-condensed'>
           <thead>
             <tr>
@@ -119,14 +127,6 @@ class Clients extends Component {
           }
           </tbody>
         </table>
-        {this.state.addClientActive ?
-          <FormContainer
-            type='Client'
-            create={ this.createClient }
-            questions={ this.questions }
-            toggleForm={ this.toggleForm }
-          /> : <button onClick={ this.toggleForm }>Add A New Client</button>
-        }
       </div>
 
     );

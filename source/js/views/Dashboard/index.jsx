@@ -53,50 +53,11 @@ export default class Dashboard extends Component {
       <div className='Dashboard'>
         <h1>IZ Services</h1>
         <p>
-          Vehicle Resgistration
+          Vehicle Registration
         </p>
 
         <hr />
-
-        <h2>Examples</h2>
-
-        <h3>Synchronous action</h3>
-        <div className='Example'>
-          <p>Counter: { counter }</p>
-          <button onClick={ this.handleTestButtonClick }>
-            Increase
-          </button>
-        </div>
-
-        <h3>Async action example</h3>
-        <div className='Example'>
-          { asyncData && <p>{ asyncData }</p> }
-          { asyncLoading && <p>Loading...</p> }
-          { asyncError && <p>Error: { asyncError }</p> }
-          <button
-            disabled={ asyncLoading }
-            onClick={ this.handleAsyncButtonClick }
-          >
-            Get async data
-          </button>
-        </div>
-
-        <h3>Background image</h3>
-        <div className='Example'>
-          <div className='BackgroundImgExample' />
-        </div>
-
-        <h3>Image imported to the component</h3>
-        <div className='Example'>
-          <img src={ bookImg } alt='' className='ImgExample' />
-        </div>
-
-        <h3>SVG sprite icon set</h3>
-        <div className='Example'>
-          <Icon glyph='square' />
-          <Icon glyph='circle' />
-          <Icon glyph='triangle' />
-        </div>
+        <img src="./assets/img/ali.jpg" />
       </div>
     );
   }
