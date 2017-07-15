@@ -55,7 +55,7 @@ class Vehicles extends Component {
     }, {});
     data.client_id = this.props.match.params.clientId;
     JSON.stringify(data);
-    axios.post('/v1/vehicles', data)
+    axios.post('/api/v1/vehicles', data)
       .then(response => console.warn('saved successfully', response))
       .catch(error => console.error(error));
   }
