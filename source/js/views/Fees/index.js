@@ -18,6 +18,8 @@ class Fees extends Component {
     this.state = {
       fees: [],
       fee: null,
+      totalPayments: null,
+      totalFees: null,
       formActive: false,
       detailsActive: false,
       payments: [],
@@ -42,12 +44,19 @@ class Fees extends Component {
 
   componentDidMount() {
     this.getFees();
+    this.getPayments();
+  }
+
+  getPayments() {
+    axios.get(`http://localhost:8080/v1/payments?vehicle_id=${ this.props.match.params.vehicle_id }`)
+      .then(({ data: { data } }) => this.setState({ totalPayments: data.reduce((t, p) => t + +p.amount, 0) }))
+      .catch((error) => console.error(error));
   }
 
   getFees() {
     axios.get(`http://localhost:8080/v1/fees?vehicle_id=${ this.props.match.params.vehicle_id }`)
       .then(({ data: { data } }) => {
-        this.setState({ fees: data });
+        this.setState({ fees: data, totalFees: data.reduce((t, f) => t + +f.total_amount, 0) });
       })
       .catch((error) => console.error(error));
   }
@@ -84,13 +93,15 @@ class Fees extends Component {
 
   render() {
     const { client_id, vehicle_id } = this.props.match.params;
+    const { totalPayments, totalFees } = this.state;
+    console.log(totalFees, totalPayments)
     return (
       <div>
+        <div>Outstanding Balance: ${totalFees - totalPayments}</div>
         <table className='table table-condensed'>
           <thead>
             <tr>
-              <th>Total Amount</th>
-              <th>Total Outstanding</th>
+              <th>Fees</th>
               <th>Date</th>
               <th />
               <th />

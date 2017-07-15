@@ -16,7 +16,8 @@ class Payments extends Component {
     this.state = {
       payments: [],
       payment: null,
-      originalAmount: null,
+      totalFees: null,
+      totalPayments: null,
       formActive: false,
       detailsActive: false,
     };
@@ -32,18 +33,18 @@ class Payments extends Component {
 
   componentDidMount() {
     this.getPayments();
-    this.getFee();
+    this.getFees();
   }
 
   getPayments() {
-    axios.get(`http://localhost:8080/v1/payments?fee_id=${ this.props.match.params.fee_id }`)
-      .then(({ data: { data } }) => this.setState({ payments: data }))
+    axios.get(`http://localhost:8080/v1/payments?vehicle_id=${ this.props.match.params.vehicle_id }`)
+      .then(({ data: { data } }) => this.setState({ payments: data, totalPayments: data.reduce((t, p) => t + +p.amount, 0) }))
       .catch((error) => console.error(error));
   }
 
-  getFee() {
-    axios.get(`http://localhost:8080/v1/fees?id=${ this.props.match.params.fee_id }`)
-      .then(({ data: { data } }) => this.setState({ originalAmount: data[0].total_amount }))
+  getFees() {
+    axios.get(`http://localhost:8080/v1/fees?vehicle_id=${ this.props.match.params.vehicle_id }`)
+      .then(({ data: { data } }) => this.setState({ totalFees: data.reduce((t, f) => t + +f.total_amount, 0) }))
       .catch((error) => console.error(error));
   }
 
@@ -55,7 +56,6 @@ class Payments extends Component {
 
     data.vehicle_id = this.props.match.params.vehicle_id;
     data.client_id = this.props.match.params.client_id;
-    data.fee_id = this.props.match.params.fee_id;
 
     JSON.stringify(data);
     axios.post('http://localhost:8080/v1/payments', data)
@@ -78,11 +78,10 @@ class Payments extends Component {
   }
 
   render() {
-    const { originalAmount, payments } = this.state;
+    const { totalFees, totalPayments } = this.state;
     return (
       <div>
-        <div>Original Amount: ${originalAmount}</div>
-        <div>Outstanding Balance: ${originalAmount - payments.reduce((t, p) => p.amount + t, 0)}</div>
+        <div>Outstanding Balance: ${totalFees - totalPayments}</div>
         <table className='table table-condensed'>
           <thead>
             <tr>
@@ -110,16 +109,6 @@ class Payments extends Component {
                   >
                   Delete Payment
                 </button>
-                </td>
-                <td>
-                  <NavLink
-                    to={ `/receipt/${ payment.id }` }
-                    className='btn btn-primary btn-sm'
-                    id={ `enter${ payment.id }` }
-                    value={ payment.id }
-                  >
-                  Get Reciept
-                </NavLink>
                 </td>
               </tr>
             ))}

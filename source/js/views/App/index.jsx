@@ -22,7 +22,7 @@ export const routeCodes = {
   CLIENTS: `${ publicPath }application/:type`,
   VEHICLES: `${ publicPath }application/:type/:client_id/vehicles`,
   FEES: `${ publicPath }application/:type/:client_id/vehicles/:vehicle_id/fees`,
-  PAYMENTS: `${ publicPath }application/:type/:client_id/vehicles/:vehicle_id/fees/:fee_id/payments`,
+  PAYMENTS: `${ publicPath }application/:type/:client_id/vehicles/:vehicle_id/payments`,
   RECEIPT: `${ publicPath }receipt/:id`,
 };
 

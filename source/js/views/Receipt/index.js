@@ -13,13 +13,12 @@ class Receipt extends Component {
       type: {},
       amount: {},
     };
-
   }
 
   componentDidMount() {
     this.getPayment(this.props.match.params.id);
   }
-  
+
   getPayment(id) {
     axios.get(`http://localhost:8080/v1/payments?id=${ id }`)
       .then(({ data: { data } }) => this.setState({ payment: data[0] }))
@@ -27,9 +26,9 @@ class Receipt extends Component {
   }
 
   render() {
-    return <div>
+    return (<div>
     { this.state.payment ? <div>{this.state.payment.amount}</div> : null}
-    </div>
+    </div>);
   }
 
 }

@@ -113,6 +113,26 @@ class Vehicles extends Component {
                   View Fees
                 </NavLink>
                 </td>
+                <td>
+                  <NavLink
+                    to={ `/application/client/${ this.props.match.params.client_id }/vehicles/${ vehicle.id }/payments` }
+                    className='btn btn-primary btn-sm'
+                    id={ `enter${ vehicle.id }` }
+                    value={ vehicle.id }
+                  >
+                    View Payments
+                  </NavLink>
+                </td>
+                <td>
+                  <NavLink
+                    to={ `/receipt/${ vehicle.id }` }
+                    className='btn btn-primary btn-sm'
+                    id={ `enter${ vehicle.id }` }
+                    value={ vehicle.id }
+                  >
+                  Get Reciept
+                </NavLink>
+                </td>
               </tr>
             ))
           }
