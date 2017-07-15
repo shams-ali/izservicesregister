@@ -42,7 +42,7 @@ class Vehicles extends Component {
   }
 
   getVehicles() {
-    axios.get(`http://localhost:8080/v1/vehicles?client_id=${ this.props.match.params.client_id }`)
+    axios.get(`http://registrationinvoiceserver:3000/v1/vehicles?client_id=${ this.props.match.params.client_id }`)
       .then(({ data: { data } }) => this.setState({ vehicles: data }))
       .catch((error) => console.error(error));
   }
@@ -60,7 +60,7 @@ class Vehicles extends Component {
   }
 
   deleteVehicle({ target: { value } }) {
-    axios.delete(`/v1/vehicles/${ value }`)
+    axios.delete(`http://registrationinvoiceserver:3000/v1/vehicles/${ value }`)
       .then(({ data }) => alert('User Deleted Successfully', data))
       .catch(error => alert(error));
     // TODO: force refresh

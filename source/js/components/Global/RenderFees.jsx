@@ -20,7 +20,7 @@ class RenderFees extends Component {
   }
 
   deleteFee({ target: { value } }) {
-    axios.delete(`http://localhost:8080/v1/fees/${ value }`)
+    axios.delete(`http://registrationinvoiceserver:3000/v1/fees/${ value }`)
       .then(({ data }) => alert('User Deleted Successfully', data))
       .catch(error => alert(error));
     // TODO: force refresh
@@ -59,9 +59,8 @@ class RenderFees extends Component {
 }
 
 RenderFees.propTypes = {
-  client_id: PropTypes.string.isRequired,
-  vehicle_id: PropTypes.string.isRequired,
   fee: PropTypes.object.isRequired,
+  toggleDetails: PropTypes.func.isRequired,
 };
 
 export default RenderFees;
