@@ -4,7 +4,7 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const API_SERVER_URL = process.env.API_SERVER_URL || 'http://localhost:3000';
+const API_SERVER_URL = process.env.API_SERVER_URL;
 const proxy = require('express-http-proxy');
 
 app.use(express.static(path.join(__dirname, 'build')));
