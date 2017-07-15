@@ -8,6 +8,7 @@ import React, { PropTypes, Component } from 'react';
 import axios from 'axios';
 import _ from 'lodash';
 import FormContainer from 'components/Global/FormContainer';
+import moment from 'moment';
 
 class Payments extends Component {
 
@@ -100,7 +101,7 @@ class Payments extends Component {
               <tr key={ payment.id }>
                 <td>{payment.type}</td>
                 <td>${payment.amount}</td>
-                <td>{payment.created_at}</td>
+                <td>{moment(payment.created_at).format('MMMM Do YYYY')}</td>
                 <td>
                   <button
                     className='btn btn-primary btn-sm'

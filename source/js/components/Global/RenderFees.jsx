@@ -5,6 +5,7 @@
 
 import React, { PropTypes, Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 
 class RenderFees extends Component {
 
@@ -30,7 +31,7 @@ class RenderFees extends Component {
     return (
       <tr key={ fee.id }>
         <td>${fee.total_amount}</td>
-        <td>{fee.created_at}</td>
+        <td>{moment(fee.created_at).format('MMMM Do YYYY')}</td>
         <td>
           <button
             className='btn btn-primary btn-sm'

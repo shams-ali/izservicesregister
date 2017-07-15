@@ -9,7 +9,7 @@ const ClientItem = ({ client, deleteClient }) => (
   <tr key={ client.id }>
     <td>{`${ client.name }`}</td>
     <td>{client.dealer}</td>
-    <td>{moment(client.created_at).format('h:mmA')}</td>
+    <td>{moment(client.created_at).format('MMMM Do YYYY')}</td>
     <td>
       <button
         className='btn btn-primary btn-sm'
