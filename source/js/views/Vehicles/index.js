@@ -5,10 +5,10 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 import React, { PropTypes, Component } from 'react';
-import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import _ from 'lodash';
 import FormContainer from 'components/Global/FormContainer';
+import VehicleList from 'components/Vehicle/VehicleList';
 
 class Vehicles extends Component {
 
@@ -33,8 +33,8 @@ class Vehicles extends Component {
       case_status: {},
       comment: {},
     };
+
     this.createVehicle = this.createVehicle.bind(this);
-    this.deleteVehicle = this.deleteVehicle.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
   }
 
@@ -60,21 +60,15 @@ class Vehicles extends Component {
       .catch(error => console.error(error));
   }
 
-  deleteVehicle({ target: { value } }) {
-    axios.delete(`/api/v1/vehicles/${ value }`)
-      .then(({ data }) => alert('User Deleted Successfully', data))
-      .catch(error => alert(error));
-    // TODO: force refresh
-  }
-
   toggleForm() {
     this.setState({ formActive: !this.state.formActive });
   }
 
   render() {
+    const { vehicles, formActive } = this.state;
     return (
       <div>
-        {this.state.formActive ?
+        {formActive ?
           <FormContainer
             type='Vehicle'
             create={ this.createVehicle }
@@ -95,60 +89,11 @@ class Vehicles extends Component {
               <th />
             </tr>
           </thead>
-          <tbody>
-            {this.state.vehicles.map((vehicle, i) => (
-              <tr key={ vehicle.id }>
-                <td>{`${ vehicle.make }`}</td>
-                <td>{vehicle.model_year}</td>
-                <td>{vehicle.exp_date}</td>
-                <td>{vehicle.vin}</td>
-                <td>
-                  <button
-                    className='btn btn-primary btn-sm'
-                    key={ vehicle.id }
-                    id={ vehicle.id }
-                    value={ vehicle.id }
-                    onClick={ (e) => confirm('Delete Vehicle?') && this.deleteVehicle(e) }
-                  >
-                  Delete Vehicle
-                </button>
-                </td>
-                <td>
-                  <NavLink
-                    to={ `/application/client/${ this.props.match.params.clientId }/vehicles/${ vehicle.id }/fees` }
-                    className='btn btn-primary btn-sm'
-                    id={ `${ vehicle.id }` }
-                    value={ vehicle.id }
-                  >
-                  View Fees
-                </NavLink>
-                </td>
-                <td>
-                  <NavLink
-                    to={ `/application/client/${ this.props.match.params.clientId }/vehicles/${ vehicle.id }/payments` }
-                    className='btn btn-primary btn-sm'
-                    id={ `${ vehicle.id }` }
-                    value={ vehicle.id }
-                  >
-                    View Payments
-                  </NavLink>
-                </td>
-                <td>
-                  <NavLink
-                    to={ `/receipt/${ vehicle.id }` }
-                    className='btn btn-primary btn-sm'
-                    id={ `${ vehicle.id }` }
-                    value={ vehicle.id }
-                  >
-                  Get Reciept
-                </NavLink>
-                </td>
-              </tr>
-            ))
-          }
-          </tbody>
+          <VehicleList 
+            vehicles={ vehicles }
+            clientId={ this.props.match.params.clientId }
+          />
         </table>
-
       </div>
     );
   }
