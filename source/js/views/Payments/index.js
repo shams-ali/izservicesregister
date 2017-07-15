@@ -114,6 +114,8 @@ class Payments extends Component {
             ))}
           </tbody>
         </table>
+        <div>Total Payments: {totalPayments}</div>
+        <div>Total Fees: {totalFees}</div>
         {/*{this.state.detailsActive ? <PaymentDetails payment={this.state.payment} /> : null} */}
         {this.state.formActive ?
           <FormContainer
