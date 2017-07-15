@@ -47,64 +47,56 @@ class Receipt extends Component {
   render() {
     const { payments, totalPayments, fees, totalFees, vehicle } = this.state;
     const { make, vin } = vehicle;
-    console.log(vehicle);
+
     return (
       <div>
         <h1>RECEIPT</h1>
-        <h1>Make: {make} VIN: {vin} </h1>
+        <h1>Make: {make.toUpperCase()} VIN: {vin.toUpperCase()} </h1>
         <div>
-          <h2>Fees</h2>
-          {fees.map(fee =>
-            <div key={ fee.id }>
-              <table className='table table-condensed'>
-                <thead>
-                  <tr>
-                    {_.chain(fee)
-                      .pick('dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at')
-                      .map((prop, key) => <th key={ key }>{key}</th>)
-                      .value()
-                    }
-                  </tr>
-                  <tr>
-                    {_.chain(fee)
-                      .pick('dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at')
-                      .map((val, key) => <th key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : `$${ val }`}</th>)
-                      .value()
-                    }
-                  </tr>
-                </thead>
-                <thead />
-              </table>
-            </div>
-          )}
-          <h3>Total Fees: ${totalFees}</h3>
+          <h2>Total Fees: ${totalFees}</h2>
+          <table className='table table-condensed'> 
+            <thead>
+              <tr>
+                {['dmv', 'service', 'tax', 'other', 'total amount', 'created at']
+                  .map((prop, key) => <th key={ key }>{prop.toUpperCase()}</th>)
+                }
+              </tr>
+            </thead>
+            <tbody>
+              {fees.map(fee =>
+                <tr key={ fee.id }>
+                  {_.chain(fee)
+                    .pick('dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at')
+                    .map((val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : `$${ val }`}</td>)
+                    .value()
+                  }
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
         <div>
-          <h2>Payments</h2>
-          {payments.map(payment =>
-            <div key={ payment.id }>
-              <table className='table table-condensed'>
-                <thead>
-                  <tr>
-                    {_.chain(payment)
-                      .pick('type', 'amount', 'created_at')
-                      .map((prop, key) => <th key={ key }>{key}</th>)
-                      .value()
-                    }
-                  </tr>
-                  <tr>
-                    {_.chain(payment)
-                      .pick('type', 'amount', 'created_at')
-                      .map((val, key) => <th key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val}</th>)
-                      .value()
-                    }
-                  </tr>
-                </thead>
-                <thead />
-              </table>
-            </div>
-          )}
-          <h3>Total Payments: ${totalPayments}</h3>
+          <h2>Payments:  ${totalPayments}</h2>
+          <table className='table table-condensed'> 
+            <thead>
+              <tr>
+                {['type', 'amount', 'created_at']
+                  .map((prop, key) => <th key={ key }>{prop.toUpperCase()}</th>)
+                }
+              </tr>
+            </thead>
+            <tbody>
+              {payments.map(payment =>
+                <tr key={ payment.id }>
+                  {_.chain(payment)
+                    .pick('type', 'amount', 'created_at')
+                    .map((val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val}</td>)
+                    .value()
+                  }
+                </tr>
+              )}
+            </tbody>
+          </table>
           <h1>Outstanding Balance: ${totalFees - totalPayments}</h1>
         </div>
       </div>
