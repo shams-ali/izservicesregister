@@ -1,63 +1,16 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { testAction, testAsync } from 'actions/app';
-import Icon from 'components/Global/Icon';
+import React from 'react';
 import bookImg from '../../../assets/img/book2.jpg';
 
-@connect(state => ({
-  asyncData: state.app.get('asyncData'),
-  asyncError: state.app.get('asyncError'),
-  asyncLoading: state.app.get('asyncLoading'),
-  counter: state.app.get('counter'),
-}))
+const Dashboard = () => (
+  <div className='Dashboard'>
+    <h1>IZ Services</h1>
+    <p>
+      Vehicle Registration
+    </p>
 
-export default class Dashboard extends Component {
-  static propTypes = {
-    asyncData: PropTypes.string,
-    asyncError: PropTypes.object,
-    asyncLoading: PropTypes.bool,
-    counter: PropTypes.number,
-    dispatch: PropTypes.func,
-  }
+    <hr />
+    <img src={ bookImg } />
+  </div>
+);
 
-  constructor() {
-    super();
-
-    this.handleAsyncButtonClick = this.handleAsyncButtonClick.bind(this);
-    this.handleTestButtonClick = this.handleTestButtonClick.bind(this);
-  }
-
-  handleAsyncButtonClick() {
-    const { dispatch } = this.props;
-
-    dispatch(testAsync());
-  }
-
-  handleTestButtonClick() {
-    const { dispatch } = this.props;
-
-    dispatch(testAction());
-  }
-
-  render() {
-    const {
-      asyncData,
-      asyncError,
-      asyncLoading,
-      counter,
-    } = this.props;
-
-    return (
-      <div className='Dashboard'>
-        <h1>IZ Services</h1>
-        <p>
-          Vehicle Registration
-        </p>
-
-        <hr />
-        <img src="./assets/img/ali.jpg" />
-      </div>
-    );
-  }
-}
+export default Dashboard;
