@@ -18,10 +18,9 @@ class Applications extends Component {
       <div className='row home'>
         <div className='col-md-12'>
           <div className='row'>
-            <div className='col-md-7'>
+            <div className='col-md-12 text-center'>
               <h3>Welcome to the Registration Invoice Generator</h3>
-            </div>
-            <div className='col-md-5 text-center'>
+
               <h3>What do you need help with?</h3>
               {this.applications.map((application, index) => (
                 <div key={ application.title }>

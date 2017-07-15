@@ -1,3 +1,26 @@
 @import "base/normalize";
 @import "base/breakpoints";
 @import "base/app";
+
+body {
+  font-family: 'Muli', sans-serif;
+}
+
+.Menu-link {
+  font-family: 'Muli', sans-serif;
+  font-style: none;
+}
+
+.Menu {
+  background: #2c76c9;
+  a {
+    color: #fff;
+  }
+}
+
+.btn-default {
+  border: solid 1px #05c36c;
+  color: #05c36c;
+  border-radius: 100px;
+  margin-bottom: 1rem;
+}
