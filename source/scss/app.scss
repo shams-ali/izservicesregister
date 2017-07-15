@@ -19,7 +19,10 @@ body {
 
 .navbar-inverse {
   background: #2c76c9;
-
+  .navbar-toggle {
+    background: #3c6694;
+    border: transparent;
+  }
   .navbar-nav > li > a {
     padding: 25px;
   }
