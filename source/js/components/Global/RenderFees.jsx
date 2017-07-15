@@ -4,7 +4,6 @@
 /* eslint "no-confusing-arrow": off */
 
 import React, { PropTypes, Component } from 'react';
-import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 
 class RenderFees extends Component {
@@ -20,7 +19,7 @@ class RenderFees extends Component {
   }
 
   deleteFee({ target: { value } }) {
-    axios.delete(`http://registrationinvoiceserver:3000/v1/fees/${ value }`)
+    axios.delete(`/api/v1/fees/${ value }`)
       .then(({ data }) => alert('User Deleted Successfully', data))
       .catch(error => alert(error));
     // TODO: force refresh

@@ -48,13 +48,13 @@ class Fees extends Component {
   }
 
   getPayments() {
-    axios.get(`http://registrationinvoiceserver:3000/v1/payments?vehicle_id=${ this.props.match.params.vehicle_id }`)
+    axios.get(`/api/v1/payments?vehicle_id=${ this.props.match.params.vehicle_id }`)
       .then(({ data: { data } }) => this.setState({ totalPayments: data.reduce((t, p) => t + +p.amount, 0) }))
       .catch((error) => console.error(error));
   }
 
   getFees() {
-    axios.get(`http://registrationinvoiceserver:3000/v1/fees?vehicle_id=${ this.props.match.params.vehicle_id }`)
+    axios.get(`/api/v1/fees?vehicle_id=${ this.props.match.params.vehicle_id }`)
       .then(({ data: { data } }) => {
         this.setState({ fees: data, totalFees: data.reduce((t, f) => t + +f.total_amount, 0) });
       })
@@ -74,7 +74,7 @@ class Fees extends Component {
     data.vehicle_id = this.props.match.params.vehicle_id;
     data.client_id = this.props.match.params.client_id;
     JSON.stringify(data);
-    axios.post('http://registrationinvoiceserver:3000/v1/fees', data)
+    axios.post('/api/v1/fees', data)
       .then(response => console.warn('saved successfully', response))
       .catch(error => console.error(error));
   }

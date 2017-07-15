@@ -37,13 +37,13 @@ class Payments extends Component {
   }
 
   getPayments() {
-    axios.get(`http://registrationinvoiceserver:3000/v1/payments?vehicle_id=${ this.props.match.params.vehicle_id }`)
+    axios.get(`/api/v1/payments?vehicle_id=${ this.props.match.params.vehicle_id }`)
       .then(({ data: { data } }) => this.setState({ payments: data, totalPayments: data.reduce((t, p) => t + +p.amount, 0) }))
       .catch((error) => console.error(error));
   }
 
   getFees() {
-    axios.get(`http://registrationinvoiceserver:3000/v1/fees?vehicle_id=${ this.props.match.params.vehicle_id }`)
+    axios.get(`/api/v1/fees?vehicle_id=${ this.props.match.params.vehicle_id }`)
       .then(({ data: { data } }) => this.setState({ totalFees: data.reduce((t, f) => t + +f.total_amount, 0) }))
       .catch((error) => console.error(error));
   }
@@ -58,13 +58,13 @@ class Payments extends Component {
     data.client_id = this.props.match.params.client_id;
 
     JSON.stringify(data);
-    axios.post('http://registrationinvoiceserver:3000/v1/payments', data)
+    axios.post('/api/v1/payments', data)
       .then(response => console.warn('saved successfully', response))
       .catch(error => console.error(error));
   }
 
   deletePayment({ target: { value } }) {
-    axios.delete(`http://registrationinvoiceserver:3000/v1/payments/${ value }`)
+    axios.delete(`/api/v1/payments/${ value }`)
       .then(({ data }) => alert('Payment Deleted Successfully', data))
       .catch(error => alert(error));
   }
@@ -116,7 +116,6 @@ class Payments extends Component {
         </table>
         <div>Total Payments: {totalPayments}</div>
         <div>Total Fees: {totalFees}</div>
-        {/*{this.state.detailsActive ? <PaymentDetails payment={this.state.payment} /> : null} */}
         {this.state.formActive ?
           <FormContainer
             type='Payment'

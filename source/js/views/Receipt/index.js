@@ -20,7 +20,7 @@ class Receipt extends Component {
   }
 
   getPayment(id) {
-    axios.get(`http://registrationinvoiceserver:3000/v1/payments?id=${ id }`)
+    axios.get(`/api/v1/payments?id=${ id }`)
       .then(({ data: { data } }) => this.setState({ payment: data[0] }))
       .catch((error) => console.error(error));
   }

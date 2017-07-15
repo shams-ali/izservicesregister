@@ -46,7 +46,7 @@ class Clients extends Component {
   }
 
   getClients() {
-    axios.get('http://registrationinvoiceserver:3000/v1/clients')
+    axios.get('/api/v1/clients')
       .then(({ data: { data } }) => this.setState({ clients: data }))
       .catch((error) => console.error(error));
   }
@@ -57,13 +57,13 @@ class Clients extends Component {
       return memo;
     }, {});
     JSON.stringify(data);
-    axios.post('http://registrationinvoiceserver:3000/v1/clients', data)
+    axios.post('/api/v1/clients', data)
       .then(response => console.warn('saved successfully', response))
       .catch(error => console.error(error));
   }
 
   deleteClient({ target: { value } }) {
-    axios.delete(`http://registrationinvoiceserver:3000/v1/clients/${ value }`)
+    axios.delete(`/api/v1/clients/${ value }`)
       .then(({ data }) => alert('User Deleted Successfully', data))
       .catch(error => alert(error));
     // TODO: force refresh
