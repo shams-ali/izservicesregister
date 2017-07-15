@@ -51,10 +51,10 @@ class Receipt extends Component {
     return (
       <div>
         <h1>RECEIPT</h1>
-        <h1>Make: {make.toUpperCase()} VIN: {vin.toUpperCase()} </h1>
+        {!(_.isEmpty(vehicle)) && <h1>Make: {make.toUpperCase()} VIN: {vin.toUpperCase()} </h1>}
         <div>
           <h2>Total Fees: ${totalFees}</h2>
-          <table className='table table-condensed'> 
+          <table className='table table-condensed'>
             <thead>
               <tr>
                 {['dmv', 'service', 'tax', 'other', 'total amount', 'created at']
@@ -63,7 +63,7 @@ class Receipt extends Component {
               </tr>
             </thead>
             <tbody>
-              {fees.map(fee =>
+              {fees.length && fees.map(fee =>
                 <tr key={ fee.id }>
                   {_.chain(fee)
                     .pick('dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at')
@@ -77,16 +77,16 @@ class Receipt extends Component {
         </div>
         <div>
           <h2>Payments:  ${totalPayments}</h2>
-          <table className='table table-condensed'> 
+          <table className='table table-condensed'>
             <thead>
               <tr>
-                {['type', 'amount', 'created_at']
+                {['type', 'amount', 'created at']
                   .map((prop, key) => <th key={ key }>{prop.toUpperCase()}</th>)
                 }
               </tr>
             </thead>
             <tbody>
-              {payments.map(payment =>
+              {payments.length && payments.map(payment =>
                 <tr key={ payment.id }>
                   {_.chain(payment)
                     .pick('type', 'amount', 'created_at')
