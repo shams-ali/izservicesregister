@@ -91,6 +91,8 @@ class Vehicles extends Component {
               <th>VIN</th>
               <th />
               <th />
+              <th />
+              <th />
             </tr>
           </thead>
           <tbody>
