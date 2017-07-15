@@ -63,7 +63,7 @@ class Receipt extends Component {
               </tr>
             </thead>
             <tbody>
-              {fees.length && fees.map(fee =>
+              {fees.map(fee =>
                 <tr key={ fee.id }>
                   {_.chain(fee)
                     .pick('dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at')
@@ -86,7 +86,7 @@ class Receipt extends Component {
               </tr>
             </thead>
             <tbody>
-              {payments.length && payments.map(payment =>
+              {payments.map(payment =>
                 <tr key={ payment.id }>
                   {_.chain(payment)
                     .pick('type', 'amount', 'created_at')
