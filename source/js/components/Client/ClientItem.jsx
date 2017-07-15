@@ -1,11 +1,19 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+/* eslint no-alert: off */
+/* eslint no-confirm: off */
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
-const ClientItem = ({ client, deleteClient }) => (
+const deleteClient = ({ target: { value } }) =>
+  axios.delete(`/api/v1/clients/${ value }`)
+    .then(({ data }) => alert('User Deleted Successfully', data))
+    .catch(error => alert(error));
+
+const ClientItem = ({ client }) => (
   <tr key={ client.id }>
     <td>{`${ client.name }`}</td>
     <td>{client.dealer}</td>
@@ -36,7 +44,6 @@ const ClientItem = ({ client, deleteClient }) => (
 
 ClientItem.propTypes = {
   client: PropTypes.object.isRequired,
-  deleteClient: PropTypes.func.isRequired,
 };
 
 export default ClientItem;

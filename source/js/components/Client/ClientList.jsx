@@ -2,14 +2,13 @@ import React from 'react';
 import ClientItem from 'components/Client/ClientItem';
 import PropTypes from 'prop-types';
 
-const ClientList = ({ clients, deleteClient }) => {
+const ClientList = ({ clients }) => {
   return (
     <tbody>
       {clients.map((client, index) =>
         <ClientItem
           key={ index }
           client={ client }
-          deleteClient={ deleteClient }
         />
       )}
     </tbody>
@@ -18,7 +17,6 @@ const ClientList = ({ clients, deleteClient }) => {
 
 ClientList.propTypes = {
   clients: PropTypes.object.isRequired,
-  deleteClient: PropTypes.func.isRequired,
 };
 
 export default ClientList;

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Dashboard from 'views/Dashboard';
 import About from 'views/About';
 import Applications from 'views/Applications';
-import Search from 'components/Search';
+import Search from 'views/Search';
 import Clients from 'views/Clients';
 import Vehicles from 'views/Vehicles';
 import Fees from 'views/Fees';

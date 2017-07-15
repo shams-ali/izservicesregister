@@ -1,6 +1,4 @@
 /* eslint no-param-reassign: off */
-/* eslint no-alert: off */
-/* eslint no-confirm: off */
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 import React, { Component } from 'react';
@@ -26,12 +24,8 @@ class Clients extends Component {
       addClientActive: false,
     };
     this.questions = {
-      dealer: {
-        validations: ['required'],
-      },
-      name: {
-        validations: ['required'],
-      },
+      dealer: {},
+      name: {},
       phone: {},
       email: {},
       dl: {},
@@ -44,7 +38,6 @@ class Clients extends Component {
     };
 
     this.createClient = this.createClient.bind(this);
-    this.deleteClient = this.deleteClient.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
   }
 
@@ -62,13 +55,6 @@ class Clients extends Component {
     axios.post('/api/v1/clients', data)
       .then(response => console.warn('saved successfully', response))
       .catch(error => console.error(error));
-  }
-
-  deleteClient({ target: { value } }) {
-    axios.delete(`/api/v1/clients/${ value }`)
-      .then(({ data }) => alert('User Deleted Successfully', data))
-      .catch(error => alert(error));
-    // TODO: force refresh
   }
 
   toggleForm() {
@@ -99,9 +85,6 @@ class Clients extends Component {
           </thead>
           <ClientList
             clients={ clients }
-            deleteClient={ this.deleteClient }
-            toggleForm={ this.toggleForm }
-            createClient={ this.createClient }
           />
         </table>
       </div>

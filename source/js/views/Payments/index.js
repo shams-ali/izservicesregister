@@ -57,8 +57,8 @@ class Payments extends Component {
       return memo;
     }, {});
 
-    data.vehicle_id = this.props.match.params.vehicle_id;
-    data.client_id = this.props.match.params.client_id;
+    data.vehicle_id = this.props.match.params.vehicleId;
+    data.client_id = this.props.match.params.clientId;
 
     JSON.stringify(data);
     axios.post('/api/v1/payments', data)
