@@ -34,31 +34,9 @@ class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      registered: false,
-      dobInputType: 'text',
+      exp_date: 'text',
     };
     this.removeApiError = this.removeApiError.bind(this);
-  }
-
-  onSubmit(event) {
-    event.preventDefault();
-    console.warn('submitting', event.target);
-    const data = 'thhits will be data';
-    // let data = {
-    //   dob: event.target.dob.value,
-    //   street: event.target.street.value,
-    //   city: event.target.city.value,
-    //   state: event.target.state.value,
-    //   zip: event.target.zip.value,
-    //   income: event.target.income.value,
-    //   gender: event.target.gender.value,
-    //   race: event.target.race.value,
-    //   veteran: event.target.veteran.value,
-    //   householdSize: event.target.householdSize.value,
-    // };
-    // data = JSON.stringify(data);
-    this.props.create(data);
   }
 
   removeApiError() {
@@ -90,9 +68,9 @@ class Form extends React.Component {
                     className='form-control'
                     value={ question.value || '' }
                     placeholder={ name || '' }
-                    onFocus={ question.onFocus || '' }
+                    onFocus={ (() => this.setState({ [question.name]: question.type })) || '' }
                     name={ name }
-                    type={ question.type }
+                    type={ question.onFocus ? this.state[question.name] : question.type }
                     validations={ question.validations || [] }
                   />
                 }

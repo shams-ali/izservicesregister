@@ -29,6 +29,7 @@ class Vehicles extends Component {
       },
       exp_date: {
         type: 'date',
+        onFocus: true,
       },
       engine: {},
       case_type: {},
