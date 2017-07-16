@@ -47,7 +47,6 @@ export default class Summary extends Component {
   calculatePayments(summaryType) {
     return this.state.payments
       .filter(({ created_at }) => moment(created_at).isSame(moment(), summaryType))
-      .map(payment => _.pick(payment, 'type', 'amount'))
       .reduce((total, fee) => {
         total[fee.type] = +total[fee.type] + fee.amount || fee.amount;
         return total;
