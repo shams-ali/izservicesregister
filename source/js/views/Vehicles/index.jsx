@@ -27,7 +27,9 @@ class Vehicles extends Component {
       model_year: {
         validations: ['year'],
       },
-      exp_date: {},
+      exp_date: {
+        type: 'date',
+      },
       engine: {},
       case_type: {},
       case_status: {},

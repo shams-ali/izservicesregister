@@ -6,6 +6,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import moment from 'moment';
 
 const deleteVehicle = ({ target: { value } }) =>
   axios.delete(`/api/v1/vehicles/${ value }`)
@@ -16,7 +17,7 @@ const VehicleItem = ({ vehicle, clientId }) => (
   <tr key={ vehicle.id }>
     <td>{`${ vehicle.make }`}</td>
     <td>{vehicle.model_year}</td>
-    <td>{vehicle.exp_date}</td>
+    <td>{moment(vehicle.exp_date).format('MMMM Do YYYY')}</td>
     <td>{vehicle.vin}</td>
     <td>
       <button

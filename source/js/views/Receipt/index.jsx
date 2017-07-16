@@ -67,19 +67,19 @@ class Receipt extends Component {
 
   render() {
     const { payments, totalPayments, fees, totalFees, vehicle, client } = this.state;
-    const { make, vin } = vehicle;
+    const { make, vin, model_year, plate, id } = vehicle;
 
     return (
       <div>
         <h1>RECEIPT</h1>
-        {!(_.isEmpty(vehicle)) && <h1>Make: {make.toUpperCase()} VIN: {vin.toUpperCase()} </h1>}
+        {!(_.isEmpty(vehicle)) && <h1>Make: {make.toUpperCase()} VIN: {vin.toUpperCase()} Year: { model_year } Plate: { plate } ID: { id }</h1>}
         {!(_.isEmpty(vehicle)) && this.renderClientInfo(client)}
         <div>
           <h2>Total Fees: ${totalFees}</h2>
           <table className='table table-condensed'>
             <thead>
               <tr>
-                {['dmv', 'service', 'tax', 'other', 'total amount', 'created at']
+                {['dmv', 'service', 'tax', 'other', 'total amount', 'created at', 'id']
                   .map((prop, key) => <th key={ key }>{prop.toUpperCase()}</th>)
                 }
               </tr>
@@ -88,7 +88,7 @@ class Receipt extends Component {
               {fees.map(fee =>
                 <tr key={ fee.id }>
                   {_.chain(fee)
-                    .pick('dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at')
+                    .pick('dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at', 'id')
                     .map((val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : `$${ val }`}</td>)
                     .value()
                   }
@@ -98,11 +98,11 @@ class Receipt extends Component {
           </table>
         </div>
         <div>
-          <h2>Payments:  ${totalPayments}</h2>
+          <h2>Payments: ${totalPayments}</h2>
           <table className='table table-condensed'>
             <thead>
               <tr>
-                {['type', 'amount', 'created at']
+                {['type', 'amount', 'created at', 'id']
                   .map((prop, key) => <th key={ key }>{prop.toUpperCase()}</th>)
                 }
               </tr>
@@ -111,7 +111,7 @@ class Receipt extends Component {
               {payments.map(payment =>
                 <tr key={ payment.id }>
                   {_.chain(payment)
-                    .pick('type', 'amount', 'created_at')
+                    .pick('type', 'amount', 'created_at', 'id')
                     .map((val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val}</td>)
                     .value()
                   }

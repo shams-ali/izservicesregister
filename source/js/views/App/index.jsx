@@ -22,13 +22,13 @@ export const routeCodes = {
   DASHBOARD: publicPath,
   ABOUT: `${ publicPath }about`,
   APPLICATIONS: `${ publicPath }applications`,
+  RECEIPT: `${ publicPath }receipt/:id`,
   SUMMARY: `${ applicationPath }summary`,
   SEARCH: `${ applicationPath }search`,
   CLIENTS: `${ applicationPath }:type`,
   VEHICLES: `${ applicationPath }:type/:clientId/vehicles`,
   FEES: `${ applicationPath }:type/:clientId/vehicles/:vehicleId/fees`,
   PAYMENTS: `${ applicationPath }:type/:clientId/vehicles/:vehicleId/payments`,
-  RECEIPT: `${ applicationPath }receipt/:id`,
 };
 
 export default class App extends Component {
