@@ -45,82 +45,88 @@ class Receipt extends Component {
       .then(({ data: { data } }) => this.setState({ vehicle: data[0], client: data[0].client }))
       .catch((error) => console.error(error));
   }
-  renderClientInfo({ name, phone, email, dl, address, city, state, zip }) {
+
+  // renderClientInfo(client) {
+  //   return (
+  //     <div>
+  //       <h2>Client</h2>
+  //       <table className='table table-condensed'>
+  //         <thead>
+  //           <tr>
+  //             {
+  //               _.chain(client)
+  //               .omit('created_at')
+  //               .map((prop, key) => <th key={ key }>{key.toUpperCase()}</th>)
+  //               .value()
+  //             }
+  //           </tr>
+  //         </thead>
+  //         <tbody>
+  //           <tr>
+  //             {_.chain(client)
+  //               .omit('created_at', 'updated_at')
+  //               .map((val, key) => <td key={ key }>{ val }</td>)
+  //               .value()
+  //             }
+  //           </tr>
+  //         </tbody>
+  //       </table>
+  //     </div>
+  //   );
+  // }
+
+  renderInfo(info, title) {
     return (
       <div>
-        <h1>Client</h1>
-        <div>
-          { `${ name } ${ email } ${ phoneFormatter.format(phone.toString(), '(NNN) NNN-NNNN') }` }
-        </div>
-        <div>
-          dl#: { dl }
-        </div>
-        <div>
-          { address }
-        </div>
-        <div>
-          {` ${ city } ${ state } ${ zip } `}
-        </div>
+        <h2>{title}</h2>
+        <table className='table table-condensed'>
+          <thead>
+            <tr>
+              {_.map(info, (prop, key) => <th key={ key }>{key.toUpperCase()}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {_.map(info, (val, key) => <td key={ key }>{ val }</td>)}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  renderListInfo(infos, title, total) {
+    return (
+      <div>
+        <h2>{title}: ${total}</h2>
+        <table className='table table-condensed'>
+          <thead>
+            <tr>
+              {_.map(infos[0], (v, k) => <th key={ k }>{ k }</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {infos.map(info =>
+              <tr key={ info.id }>
+                {_.map(info, (val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val }</td>)}
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     );
   }
 
   render() {
     const { payments, totalPayments, fees, totalFees, vehicle, client } = this.state;
-    const { make, vin, model_year, plate, id } = vehicle;
 
     return (
       <div>
         <h1>RECEIPT</h1>
-        {!(_.isEmpty(vehicle)) && <h1>Make: {make.toUpperCase()} VIN: {vin.toUpperCase()} Year: { model_year } Plate: { plate } ID: { id }</h1>}
-        {!(_.isEmpty(vehicle)) && this.renderClientInfo(client)}
-        <div>
-          <h2>Total Fees: ${totalFees}</h2>
-          <table className='table table-condensed'>
-            <thead>
-              <tr>
-                {['dmv', 'service', 'tax', 'other', 'total amount', 'created at', 'id']
-                  .map((prop, key) => <th key={ key }>{prop.toUpperCase()}</th>)
-                }
-              </tr>
-            </thead>
-            <tbody>
-              {fees.map(fee =>
-                <tr key={ fee.id }>
-                  {_.chain(fee)
-                    .pick('dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at', 'id')
-                    .map((val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val }</td>)
-                    .value()
-                  }
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <h2>Payments: ${totalPayments}</h2>
-          <table className='table table-condensed'>
-            <thead>
-              <tr>
-                {['type', 'amount', 'created at', 'id']
-                  .map((prop, key) => <th key={ key }>{prop.toUpperCase()}</th>)
-                }
-              </tr>
-            </thead>
-            <tbody>
-              {payments.map(payment =>
-                <tr key={ payment.id }>
-                  {_.chain(payment)
-                    .pick('type', 'amount', 'created_at', 'id')
-                    .map((val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val }</td>)
-                    .value()
-                  }
-                </tr>
-              )}
-            </tbody>
-          </table>
-          <h1>Outstanding Balance: ${totalFees - totalPayments}</h1>
-        </div>
+        {!(_.isEmpty(vehicle)) && this.renderInfo(_.omit(vehicle, 'created_at', 'client', 'updated_at', 'exp_date'), 'Vehicle')}
+        {!(_.isEmpty(client)) && this.renderInfo(_.omit(client, 'created_at', 'updated_at'), 'Client')}
+        {!(_.isEmpty(fees)) && this.renderListInfo(fees.map(fee => _.pick(fee, 'id', 'dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at')), 'Total Fees', totalFees)}
+        {!(_.isEmpty(payments)) && this.renderListInfo(payments.map(p => _.omit(p, 'updated_at', 'client_id', 'vehicle_id')), 'Total Payments', totalPayments)}
       </div>
     );
   }
