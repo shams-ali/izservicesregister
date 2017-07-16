@@ -89,7 +89,7 @@ class Receipt extends Component {
                 <tr key={ fee.id }>
                   {_.chain(fee)
                     .pick('dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at', 'id')
-                    .map((val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : `$${ val }`}</td>)
+                    .map((val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val }</td>)
                     .value()
                   }
                 </tr>
@@ -112,7 +112,7 @@ class Receipt extends Component {
                 <tr key={ payment.id }>
                   {_.chain(payment)
                     .pick('type', 'amount', 'created_at', 'id')
-                    .map((val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val}</td>)
+                    .map((val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val }</td>)
                     .value()
                   }
                 </tr>
