@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
-import _ from 'underscore';
+import _ from 'lodash';
 import moment from 'moment';
 
 export default class Summary extends Component {
@@ -24,39 +24,33 @@ export default class Summary extends Component {
   }
 
   componentDidMount() {
-    this.getFees();
-    this.getPayments();
+    this.getData('fees');
+    this.getData('payments');
   }
 
   onClick({ target: { value } }) {
     this.setState({ summaryType: value });
   }
 
-  getFees() {
-    axios.get('/api/v1/fees')
-      .then(({ data: { data } }) => this.setState({ fees: data }))
-      .catch((error) => console.error(error));
-  }
-
-  getPayments() {
-    axios.get('/api/v1/payments')
-      .then(({ data: { data } }) => this.setState({ payments: data }))
+  getData(type) {
+    axios.get(`/api/v1/${ type }`)
+      .then(({ data: { data } }) => this.setState({ [type]: data }))
       .catch((error) => console.error(error));
   }
 
   calculatePayments(summaryType) {
-    return this.state.payments
+    const summary = this.state.payments
       .filter(({ created_at }) => moment(created_at).isSame(moment(), summaryType))
-      .reduce((total, fee) => {
-        total[fee.type] = +total[fee.type] + fee.amount || fee.amount;
-        return total;
-      }, {});
+      .reduce((total, { type, amount }) =>
+        Object.assign({ [type]: +total[type] + amount || amount }, total), {});
+
+    return _.extend(summary, { total: _.sum(Object.values(summary)) });
   }
 
   calculateFees(summaryType) {
     return this.state.fees
       .filter(({ created_at }) => moment(created_at).isSame(moment(), summaryType))
-      .map(fee => _.pick(fee, 'dmv_fee', 'dmv_fee2', 'service_fee', 'other_fee', 'extra_discount', 'old_post_fee', 'ros_bos', 'ros_num', 'tax', 'vehicle_tax'))
+      .map(fee => _.omit(fee, 'vehicle_id', 'client_id', 'id', 'created_at', 'updated_at'))
       .reduce((total, fee) =>
         _.reduce(fee, (subTotal, amount, key) => {
           subTotal[key] = total[key] + amount || amount;
@@ -84,38 +78,23 @@ export default class Summary extends Component {
     );
   }
 
-  renderSummary() {
-    const { summaryType } = this.state;
+  renderSummary(data, title) {
     return (
       <div>
-        <h1>{summaryType.toUpperCase()}</h1>
-        <h2>Payments Summary</h2>
+        <h2>{title} Summary</h2>
         <table className='table table-condensed'>
           <thead>
             <tr>
-              {_.map(this.calculatePayments(summaryType), (prop, key) =>
-                <th key={ key }>{key}</th>)}
+              {_.map(data, (prop, key) =>
+                <th key={ key }>{key}</th>
+              )}
             </tr>
           </thead>
           <tbody>
             <tr>
-              {_.map(this.calculatePayments(summaryType), (prop, key) =>
-                <td key={ key }>{prop}</td>)}
-            </tr>
-          </tbody>
-        </table>
-        <h2>Fees Summary</h2>
-        <table className='table table-condensed'>
-          <thead>
-            <tr>
-              {_.map(this.calculateFees(summaryType), (prop, key) =>
-                <th key={ key }>{key}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {_.map(this.calculateFees(summaryType), (prop, key) =>
-                <td key={ key }>{prop}</td>)}
+              {_.map(data, (prop, key) =>
+                <td key={ key }>{prop}</td>
+              )}
             </tr>
           </tbody>
         </table>
@@ -133,7 +112,13 @@ export default class Summary extends Component {
           <div className='row'>
             <div className='col-md-12 text-center'>
               <h3>Invoice Summary Generator</h3>
-              {!summaryType ? renderSummaryTypes() : renderSummary()}
+              {!summaryType ? renderSummaryTypes() : 
+                <div>
+                  <h1>{summaryType.toUpperCase()}</h1>
+                  {renderSummary(this.calculatePayments(summaryType), 'Payments')}
+                  {renderSummary(this.calculateFees(summaryType), 'Fees')}
+                </div>
+              }
             </div>
           </div>
         </div>
