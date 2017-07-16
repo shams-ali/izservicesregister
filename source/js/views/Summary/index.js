@@ -19,6 +19,7 @@ export default class Summary extends Component {
       { summary: 'month', title: 'Current Month' },
     ];
     this.renderSummary = this.renderSummary.bind(this);
+    this.renderSummaryTypes = this.renderSummaryTypes.bind(this);
     this.onClick = this.onClick.bind(this);
   }
 
@@ -65,52 +66,75 @@ export default class Summary extends Component {
       , {});
   }
 
+  renderSummaryTypes() {
+    return (
+      <div>
+        <h4>What do you need help with?</h4><br />
+        { this.summaries.map(({ summary, title }) => (
+          <div key={ title } >
+            <button
+              className='btn btn-default btn-lg btn-block'
+              onClick={ this.onClick }
+              value={ summary }
+            >
+              {title}
+            </button>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   renderSummary() {
     const { summaryType } = this.state;
     return (
       <div>
         <h1>{summaryType.toUpperCase()}</h1>
-        <div>
-          <h1>Payments Summary</h1>
-          {_.map(this.calculatePayments(summaryType), ((value, key) =>
-            <div key={ key }>
-              <div>{ `${ key } ${ value }` }</div>
-            </div>
-          ))}
-        </div>
-        <div>
-          <h1> Fees Summary</h1>
-          {_.map(this.calculateFees(summaryType), ((value, key) =>
-            <div key={ key }>
-              <div>{ `${ key } ${ value }` }</div>
-            </div>
-          ))}
-        </div>
+        <h2>Payments Summary</h2>
+        <table className='table table-condensed'>
+          <thead>
+            <tr>
+              {_.map(this.calculatePayments(summaryType), (prop, key) =>
+                <th key={ key }>{key}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {_.map(this.calculatePayments(summaryType), (prop, key) =>
+                <td key={ key }>{prop}</td>)}
+            </tr>
+          </tbody>
+        </table>
+        <h2>Fees Summary</h2>
+        <table className='table table-condensed'>
+          <thead>
+            <tr>
+              {_.map(this.calculateFees(summaryType), (prop, key) =>
+                <th key={ key }>{key}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {_.map(this.calculateFees(summaryType), (prop, key) =>
+                <td key={ key }>{prop}</td>)}
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }
 
   render() {
-    const { onClick, renderSummary, summaries } = this;
+    const { renderSummary, renderSummaryTypes } = this;
     const { summaryType } = this.state;
+
     return (
       <div className='row home'>
         <div className='col-md-12'>
           <div className='row'>
             <div className='col-md-12 text-center'>
               <h3>Invoice Summary Generator</h3>
-              <h4>What do you need help with?</h4><br />
-              {!summaryType ? summaries.map(({ summary, title }) => (
-                <div key={ title } >
-                  <button
-                    className='btn btn-default btn-lg btn-block'
-                    onClick={ onClick }
-                    value={ summary }
-                  >
-                    {title}
-                  </button>
-                </div>
-              )) : renderSummary()}
+              {!summaryType ? renderSummaryTypes() : renderSummary()}
             </div>
           </div>
         </div>
