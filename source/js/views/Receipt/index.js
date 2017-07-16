@@ -4,6 +4,7 @@ import React, { PropTypes, Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import _ from 'lodash';
+import phoneFormatter from 'phone-formatter';
 
 class Receipt extends Component {
 
@@ -15,6 +16,7 @@ class Receipt extends Component {
       fees: [],
       totalFees: [],
       vehicle: {},
+      client: {},
     };
   }
 
@@ -40,18 +42,38 @@ class Receipt extends Component {
 
   getVehicle(id) {
     axios.get(`/api/v1/vehicles?id=${ id }`)
-      .then(({ data: { data } }) => this.setState({ vehicle: data[0] }))
+      .then(({ data: { data } }) => this.setState({ vehicle: data[0], client: data[0].client }))
       .catch((error) => console.error(error));
+  }
+  renderClientInfo({ name, phone, email, dl, address, city, state, zip }) {
+    return (
+      <div>
+        <h1>Client</h1>
+        <div>
+          { `${ name } ${ email } ${ phoneFormatter.format(phone.toString(), '(NNN) NNN-NNNN') }` }
+        </div>
+        <div>
+          dl#: { dl }
+        </div>
+        <div>
+          { address }
+        </div>
+        <div>
+          {` ${ city } ${ state } ${ zip } `}
+        </div>
+      </div>
+    );
   }
 
   render() {
-    const { payments, totalPayments, fees, totalFees, vehicle } = this.state;
+    const { payments, totalPayments, fees, totalFees, vehicle, client } = this.state;
     const { make, vin } = vehicle;
 
     return (
       <div>
         <h1>RECEIPT</h1>
         {!(_.isEmpty(vehicle)) && <h1>Make: {make.toUpperCase()} VIN: {vin.toUpperCase()} </h1>}
+        {!(_.isEmpty(vehicle)) && this.renderClientInfo(client)}
         <div>
           <h2>Total Fees: ${totalFees}</h2>
           <table className='table table-condensed'>
