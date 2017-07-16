@@ -12,93 +12,31 @@ class Receipt extends Component {
     super(props);
     this.state = {
       payments: [],
-      totalPayments: [],
+      totalPayments: 0,
       fees: [],
       totalFees: [],
-      vehicle: {},
+      vehicles: {},
       client: {},
     };
   }
 
   componentDidMount() {
-    this.getPayments(this.props.match.params.id);
-    this.getFees(this.props.match.params.id);
-    this.getVehicle(this.props.match.params.id);
+    this.getData(this.props.match.params.id, 'vehicle_id', 'Payments');
+    this.getData(this.props.match.params.id, 'vehicle_id', 'Fees');
+    this.getData(this.props.match.params.id, 'id', 'Vehicles');
   }
 
-  getPayments(id) {
-    axios.get(`/api/v1/payments?vehicle_id=${ id }`)
+  getData(id, param, type) {
+    axios.get(`/api/v1/${ type.toLowerCase() }?${ param }=${ id }`)
       .then(({ data: { data } }) =>
-        this.setState({ payments: data, totalPayments: data.reduce((t, p) => t + +p.amount, 0) }))
+        this.setState({ [type.toLowerCase()]: data, [`total${ type }`]: data.reduce((t, p) => t + p.amount || p.total_amount || 1, 0) }))
       .catch((error) => console.error(error));
-  }
-
-  getFees(id) {
-    axios.get(`/api/v1/fees?vehicle_id=${ id }`)
-      .then(({ data: { data } }) =>
-        this.setState({ fees: data, totalFees: data.reduce((t, f) => t + +f.total_amount, 0) }))
-      .catch((error) => console.error(error));
-  }
-
-  getVehicle(id) {
-    axios.get(`/api/v1/vehicles?id=${ id }`)
-      .then(({ data: { data } }) => this.setState({ vehicle: data[0], client: data[0].client }))
-      .catch((error) => console.error(error));
-  }
-
-  // renderClientInfo(client) {
-  //   return (
-  //     <div>
-  //       <h2>Client</h2>
-  //       <table className='table table-condensed'>
-  //         <thead>
-  //           <tr>
-  //             {
-  //               _.chain(client)
-  //               .omit('created_at')
-  //               .map((prop, key) => <th key={ key }>{key.toUpperCase()}</th>)
-  //               .value()
-  //             }
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           <tr>
-  //             {_.chain(client)
-  //               .omit('created_at', 'updated_at')
-  //               .map((val, key) => <td key={ key }>{ val }</td>)
-  //               .value()
-  //             }
-  //           </tr>
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   );
-  // }
-
-  renderInfo(info, title) {
-    return (
-      <div>
-        <h2>{title}</h2>
-        <table className='table table-condensed'>
-          <thead>
-            <tr>
-              {_.map(info, (prop, key) => <th key={ key }>{key.toUpperCase()}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {_.map(info, (val, key) => <td key={ key }>{ val }</td>)}
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
   }
 
   renderListInfo(infos, title, total) {
     return (
       <div>
-        <h2>{title}: ${total}</h2>
+        {total ? <h2>{title}: ${total}</h2> : <h2>{title}</h2>}
         <table className='table table-condensed'>
           <thead>
             <tr>
@@ -118,15 +56,16 @@ class Receipt extends Component {
   }
 
   render() {
-    const { payments, totalPayments, fees, totalFees, vehicle, client } = this.state;
+    const { payments, totalPayments, fees, totalFees, vehicles } = this.state;
 
     return (
       <div>
         <h1>RECEIPT</h1>
-        {!(_.isEmpty(vehicle)) && this.renderInfo(_.omit(vehicle, 'created_at', 'client', 'updated_at', 'exp_date'), 'Vehicle')}
-        {!(_.isEmpty(client)) && this.renderInfo(_.omit(client, 'created_at', 'updated_at'), 'Client')}
-        {!(_.isEmpty(fees)) && this.renderListInfo(fees.map(fee => _.pick(fee, 'id', 'dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at')), 'Total Fees', totalFees)}
+        {!(_.isEmpty(vehicles)) && this.renderListInfo(vehicles.map(v => _.omit(v, 'created_at', 'client', 'updated_at', 'exp_date')), 'Vehicle')}
+        {!(_.isEmpty(vehicles)) && this.renderListInfo(vehicles.map(v => v.client).map(c => _.omit(c, 'created_at', 'updated_at')), 'Client')}
+        {!(_.isEmpty(fees)) && this.renderListInfo(fees.map(f => _.pick(f, 'id', 'dmv_fee', 'service_fee', 'tax', 'other_fee', 'total_amount', 'created_at')), 'Total Fees', totalFees)}
         {!(_.isEmpty(payments)) && this.renderListInfo(payments.map(p => _.omit(p, 'updated_at', 'client_id', 'vehicle_id')), 'Total Payments', totalPayments)}
+        <h1>Total Outstanding: {totalFees - totalPayments}</h1>
       </div>
     );
   }
