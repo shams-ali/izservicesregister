@@ -15,8 +15,8 @@ export default class Summary extends Component {
     };
 
     this.summaries = [
-      { summary: 'year', title: 'Yearly' },
-      { summary: 'month', title: 'Monthly' },
+      { summary: 'year', title: 'Current Year' },
+      { summary: 'month', title: 'Current Month' },
     ];
     this.renderSummary = this.renderSummary.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -66,8 +66,27 @@ export default class Summary extends Component {
   }
 
   renderSummary() {
+    const { summaryType } = this.state;
     return (
-      <div>{this.state.summaryType}</div>
+      <div>
+        <h1>{summaryType.toUpperCase()}</h1>
+        <div>
+          <h1>Payments Summary</h1>
+          {_.map(this.calculatePayments(summaryType), ((value, key) =>
+            <div key={ key }>
+              <div>{ `${ key } ${ value }` }</div>
+            </div>
+          ))}
+        </div>
+        <div>
+          <h1> Fees Summary</h1>
+          {_.map(this.calculateFees(summaryType), ((value, key) =>
+            <div key={ key }>
+              <div>{ `${ key } ${ value }` }</div>
+            </div>
+          ))}
+        </div>
+      </div>
     );
   }
 
@@ -81,7 +100,7 @@ export default class Summary extends Component {
             <div className='col-md-12 text-center'>
               <h3>Invoice Summary Generator</h3>
               <h4>What do you need help with?</h4><br />
-              {!summaryType && summaries.map(({ summary, title }) => (
+              {!summaryType ? summaries.map(({ summary, title }) => (
                 <div key={ title } >
                   <button
                     className='btn btn-default btn-lg btn-block'
@@ -91,8 +110,7 @@ export default class Summary extends Component {
                     {title}
                   </button>
                 </div>
-              ))}
-              {summaryType && renderSummary()}
+              )) : renderSummary()}
             </div>
           </div>
         </div>
