@@ -34,6 +34,8 @@ class Receipt extends Component {
   }
 
   renderListInfo(infos, title, total) {
+                      // key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val
+    
     return (
       <div>
         {total ? <h2>{title}: ${total}</h2> : <h2>{title}</h2>}
@@ -46,7 +48,15 @@ class Receipt extends Component {
           <tbody>
             {infos.map(info =>
               <tr key={ info.id }>
-                {_.map(info, (val, key) => <td key={ key }>{key === 'created_at' ? moment(val).format('MMMM Do YYYY') : val }</td>)}
+                {_.map(info, (val, key) => {
+                  if (key === 'created_at') {
+                    return <td key={ key }>{moment(val).format('MMMM Do YYYY')}</td>;
+                  } else if (key === 'phone') {
+                    return <td key={ key }>{phoneFormatter.format(val.toString(), '(NNN) NNN-NNNN')}</td>;
+                  } else {
+                    return <td key={ key }>{val}</td>;
+                  }
+                })}
               </tr>
             )}
           </tbody>
