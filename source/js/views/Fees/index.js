@@ -72,8 +72,8 @@ class Fees extends Component {
     data.total_amount = _.reduce(e.target, (memo, value) =>
       value.name === 'extra_discount' ? memo - +value.value : memo + +value.value, 0);
 
-    data.vehicle_id = this.props.match.params.vehicle_id;
-    data.client_id = this.props.match.params.client_id;
+    data.vehicle_id = this.props.match.params.vehicleId;
+    data.client_id = this.props.match.params.clientId;
     JSON.stringify(data);
     axios.post('/api/v1/fees', data)
       .then(response => console.warn('saved successfully', response))
