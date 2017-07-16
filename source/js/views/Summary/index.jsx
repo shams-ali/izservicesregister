@@ -112,12 +112,12 @@ export default class Summary extends Component {
           <div className='row'>
             <div className='col-md-12 text-center'>
               <h3>Invoice Summary Generator</h3>
-              {!summaryType ? renderSummaryTypes() : 
-                <div>
-                  <h1>{summaryType.toUpperCase()}</h1>
-                  {renderSummary(this.calculatePayments(summaryType), 'Payments')}
-                  {renderSummary(this.calculateFees(summaryType), 'Fees')}
-                </div>
+              {!summaryType ? renderSummaryTypes() :
+              <div>
+                <h1>{summaryType.toUpperCase()}</h1>
+                {renderSummary(this.calculatePayments(summaryType), 'Payments')}
+                {renderSummary(this.calculateFees(summaryType), 'Fees')}
+              </div>
               }
             </div>
           </div>
