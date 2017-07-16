@@ -7,24 +7,24 @@ export default class Menu extends Component {
   render() {
     return (
       <nav className='navbar navbar-inverse navbar-fixed-top'>
-        <div className="container">
+        <div className='container'>
           <div className='Menu-links'>
-            <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
+            <div className='navbar-header'>
+              <button type='button' className='navbar-toggle collapsed' data-toggle='collapse' data-target='#navbar' aria-expanded='false' aria-controls='navbar'>
+                <span className='sr-only'>Toggle navigation</span>
+                <span className='icon-bar' />
+                <span className='icon-bar' />
+                <span className='icon-bar' />
               </button>
-              <a className="navbar-brand" href="#"><img
+              <a className='navbar-brand' href='#'><img
                 src={ Logo }
                 alt='Work & Co logo'
               />
               </a>
             </div>
 
-            <div id="navbar" className="navbar-collapse collapse navbar-right">
-              <ul className="nav navbar-nav">
+            <div id='navbar' className='navbar-collapse collapse navbar-right'>
+              <ul className='nav navbar-nav'>
                 <li>
                   <NavLink
                     activeClassName='Menu-link--active'
