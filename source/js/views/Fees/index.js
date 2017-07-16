@@ -10,7 +10,7 @@ import _ from 'lodash';
 import axios from 'axios';
 import FormContainer from 'components/Global/FormContainer';
 import RenderFees from 'components/Global/RenderFees';
-import FeeDetails from '../FeeDetails';
+import FeeDetails from 'components/Fees/FeeDetails';
 
 class Fees extends Component {
 

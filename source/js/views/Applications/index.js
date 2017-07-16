@@ -7,8 +7,8 @@ class Applications extends Component {
   constructor(props) {
     super(props);
     this.applications = [
-      { link: 'Application', title: 'Application' },
-      // { link: 'dealer', title: 'Dealer Application' },
+      { link: 'application', title: 'Application' },
+      { link: 'summary', title: 'Summary' },
       // { link: 'chart', title: 'Outstanding Chart' },
       { link: 'search', title: 'Search' },
     ];
@@ -21,7 +21,6 @@ class Applications extends Component {
           <div className='row'>
             <div className='col-md-12 text-center'>
               <h3>Welcome to the Registration Invoice Generator</h3>
-
               <h4>What do you need help with?</h4><br />
               {this.applications.map((application, index) => (
                 <div key={ application.title }>
