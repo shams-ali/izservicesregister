@@ -172,7 +172,7 @@ class Fees extends Component {
         <div>Total Payments: {totalPayments}</div>
         {detailsActive &&
           <RenderDetails
-            fee={ _.omit(fee, 'id', 'vehicle_id', 'client_id') } 
+            data={ _.omit(fee, 'id', 'vehicle_id', 'client_id') } 
           />
         }
         {formActive ?

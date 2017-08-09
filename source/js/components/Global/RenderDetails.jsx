@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
+import Moment from 'moment';
 
 const RenderDetails = ({ data }) => (
   <div>
@@ -12,7 +13,8 @@ const RenderDetails = ({ data }) => (
         </tr>
         <tr>
           {_.map(data, (val, key) => (
-            <th key={ key }>{val}</th>
+            ['created_at', 'exp_date', 'updated_at'].includes(key) ?
+              <th key={ key }>{new Moment(val).format('MMM Do YYYY')}</th> : <th key={ key }>{val}</th>
         ))}
         </tr>
       </thead>
