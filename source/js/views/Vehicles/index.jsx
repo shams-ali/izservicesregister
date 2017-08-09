@@ -71,6 +71,7 @@ class Vehicles extends Component {
   toggleForm() {
     this.setState({ formActive: !this.state.formActive });
   }
+
   toggleDetails(vehicle) {
     this.setState({ detailsActive: true, vehicle });
   }

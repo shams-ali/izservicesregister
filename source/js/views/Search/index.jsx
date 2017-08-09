@@ -15,16 +15,24 @@ class Search extends Component {
       clients: null,
       valueVIN: '',
       valueName: '',
+      valuePlate: '',
       suggestions: [],
     };
 
+    this.getVehicles = this.getVehicles.bind(this);
     this.getVINSuggestions = this.getVINSuggestions.bind(this);
     this.getNameSuggestions = this.getNameSuggestions.bind(this);
+    this.getPlateSuggestions = this.getPlateSuggestions.bind(this);
     this.onVINChange = this.onVINChange.bind(this);
     this.onNameChange = this.onNameChange.bind(this);
+    this.onPlateChange = this.onPlateChange.bind(this);
     this.onVINSuggestionsFetchRequested = this.onVINSuggestionsFetchRequested.bind(this);
     this.onNameSuggestionsFetchRequested = this.onNameSuggestionsFetchRequested.bind(this);
+    this.onPlateSuggestionsFetchRequested = this.onPlateSuggestionsFetchRequested.bind(this);
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
+    this.renderVINSuggestion = this.renderVINSuggestion.bind(this);
+    this.renderNameSuggestion = this.renderNameSuggestion.bind(this);
+    this.renderPlateSuggestion = this.renderPlateSuggestion.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +48,10 @@ class Search extends Component {
     this.setState({ valueName: newValue });
   }
 
+  onPlateChange(event, { newValue }) {
+    this.setState({ valuePlate: newValue });
+  }
+
   onVINSuggestionsFetchRequested({ value }) {
     this.setState({
       suggestions: this.getVINSuggestions(value),
@@ -49,6 +61,14 @@ class Search extends Component {
   onNameSuggestionsFetchRequested({ value }) {
     this.setState({
       suggestions: this.getNameSuggestions(value),
+    });
+  }
+
+  onPlateSuggestionsFetchRequested({ value }) {
+    console.log('plate fetch suggestions')
+
+    this.setState({
+      suggestions: this.getPlateSuggestions(value),
     });
   }
 
@@ -76,12 +96,29 @@ class Search extends Component {
     );
   }
 
+  getPlateSuggestions(v) {
+    console.log('plate suggestions')
+
+    const inputValue = v.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    return inputLength === 0 ? [] : this.state.vehicles.filter(vehicle =>
+      vehicle.plate.toLowerCase().slice(0, inputLength) === inputValue
+    );
+  }
+
   getVINSuggestionValue(suggestion) {
     return suggestion.vin;
   }
 
   getNameSuggestionValue(suggestion) {
     return suggestion.name;
+  }
+
+  getPlateSuggestionValue(suggestion) {
+    console.log('get plate suggestion v')
+
+    return suggestion.plate;
   }
 
   getVehicles() {
@@ -101,6 +138,7 @@ class Search extends Component {
       <VehicleItem
         vehicle={ suggestion }
         clientId={ suggestion.client.id }
+        getVehicles={ this.getVehicles }
       />
     );
   }
@@ -113,8 +151,19 @@ class Search extends Component {
     );
   }
 
+  renderPlateSuggestion(suggestion) {
+    console.log('plate suggestion')
+    return (
+      <VehicleItem
+        vehicle={ suggestion }
+        clientId={ suggestion.client.id }
+        getVehicles={ this.getVehicles }
+      />
+    );
+  }
+
   render() {
-    const { valueVIN, valueName, suggestions } = this.state;
+    const { valueVIN, valueName, valuePlate, suggestions } = this.state;
     const inputVINProps = {
       placeholder: 'Type a VIN number',
       value: valueVIN,
@@ -124,6 +173,11 @@ class Search extends Component {
       placeholder: 'Type a Name',
       value: valueName,
       onChange: this.onNameChange,
+    };
+    const inputPlateProps = {
+      placeholder: 'Type a Plate Number',
+      value: valuePlate,
+      onChange: this.onPlateChange,
     };
     return (
       <div className='row home'>
@@ -148,6 +202,15 @@ class Search extends Component {
                 getSuggestionValue={ this.getNameSuggestionValue }
                 renderSuggestion={ this.renderNameSuggestion }
                 inputProps={ inputNameProps }
+              />
+              <h4>Search By Plate</h4><br />
+              <Autosuggest
+                suggestions={ suggestions }
+                onSuggestionsFetchRequested={ this.onPlateSuggestionsFetchRequested }
+                onSuggestionsClearRequested={ this.onSuggestionsClearRequested }
+                getSuggestionValue={ this.getPlateSuggestionValue }
+                renderSuggestion={ this.renderPlateSuggestion }
+                inputProps={ inputPlateProps }
               />
             </div>
           </div>

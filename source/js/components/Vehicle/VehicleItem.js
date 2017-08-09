@@ -20,7 +20,8 @@ const VehicleItem = ({ vehicle, clientId, toggleDetails, getVehicles }) => {
       <td>{vehicle.model_year}</td>
       <td>{moment(vehicle.exp_date).format('MMMM Do YYYY')}</td>
       <td>{vehicle.vin}</td>
-      <td>
+      <td>{vehicle.plate}</td>
+      {toggleDetails && <td>
         <button
           className='btn btn-primary btn-sm'
           key={ vehicle.id }
@@ -30,7 +31,7 @@ const VehicleItem = ({ vehicle, clientId, toggleDetails, getVehicles }) => {
         >
         Details
       </button>
-      </td>
+      </td>}
       <td>
         <button
           className='btn btn-primary btn-sm'
@@ -79,7 +80,7 @@ const VehicleItem = ({ vehicle, clientId, toggleDetails, getVehicles }) => {
 VehicleItem.propTypes = {
   vehicle: PropTypes.object,
   clientId: PropTypes.number,
-  toggleDetails: PropTypes.func.isRequired,
+  toggleDetails: PropTypes.func,
   getVehicles: PropTypes.func.isRequired,
 };
 

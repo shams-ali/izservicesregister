@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 
-const FeeDetails = ({ data }) => (
+const RenderDetails = ({ data }) => (
   <div>
     <table className='table table-condensed'>
       <thead>
@@ -21,8 +21,8 @@ const FeeDetails = ({ data }) => (
   </div>
 );
 
-FeeDetails.propTypes = {
+RenderDetails.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-export default FeeDetails;
+export default RenderDetails;
