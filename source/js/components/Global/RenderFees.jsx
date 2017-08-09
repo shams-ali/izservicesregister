@@ -11,23 +11,18 @@ class RenderFees extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      totalPaid: null,
-      detailsActive: false,
-    };
 
     this.deleteFee = this.deleteFee.bind(this);
   }
 
   deleteFee({ target: { value } }) {
     axios.delete(`/api/v1/fees/${ value }`)
-      .then(({ data }) => alert('User Deleted Successfully', data))
+      .then(() => this.props.getFees())
       .catch(error => alert(error));
-    // TODO: force refresh
   }
 
   render() {
-    const { fee, toggleDetails } = this.props;
+    const { fee, toggleDetails, toggleUpdateForm } = this.props;
     return (
       <tr key={ fee.id }>
         <td>${fee.total_amount}</td>
@@ -35,23 +30,35 @@ class RenderFees extends Component {
         <td>
           <button
             className='btn btn-primary btn-sm'
-            key={ fee.id }
-            id={ fee.id }
+            key='delete'
+            id='delete'
             value={ fee.id }
             onClick={ (e) => confirm('Delete Fee?') && this.deleteFee(e) }
           >
           Delete Fee
-        </button>
+          </button>
         </td>
         <td>
           <button
             className='btn btn-primary btn-sm'
-            id={ `enter${ fee.id }` }
+            key='update'
+            id='update'
+            value={ fee.id }
+            onClick={ () => toggleUpdateForm(fee) }
+          >
+          Update Fee
+          </button>
+        </td>
+        <td>
+          <button
+            className='btn btn-primary btn-sm'
+            key='details'
+            id='details'
             value={ fee.id }
             onClick={ () => toggleDetails(fee) }
           >
           Details
-        </button>
+          </button>
         </td>
       </tr>
     );
@@ -61,6 +68,8 @@ class RenderFees extends Component {
 RenderFees.propTypes = {
   fee: PropTypes.object.isRequired,
   toggleDetails: PropTypes.func.isRequired,
+  getFees: PropTypes.func.isRequired,
+  toggleUpdateForm: PropTypes.func.isRequired,
 };
 
 export default RenderFees;

@@ -47,7 +47,7 @@ class Form extends React.Component {
     return (
       <div className='row'>
         <div className='text-center'>
-          <h3>Add A New {this.props.type}</h3>
+          <h3>{this.props.type}</h3>
           <Validation.components.Form ref={ c => { this.form = c; } } onSubmit={ this.props.create }>
             {_.map(this.props.questions, (question, name) => (
               <div key={ name } className='form-group'>
@@ -78,7 +78,7 @@ class Form extends React.Component {
             ))}
             <div className='form-group'>
               <Validation.components.Button className='btn btn-default btn-block' >
-                Create {this.props.type}
+                Submit
               </Validation.components.Button>
             </div>
           </Validation.components.Form>

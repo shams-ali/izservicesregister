@@ -22,6 +22,7 @@ class Fees extends Component {
       totalPayments: null,
       totalFees: null,
       formActive: false,
+      formUpdateActive: false,
       detailsActive: false,
       payments: [],
     };
@@ -36,10 +37,16 @@ class Fees extends Component {
       ros_num: {},
       tax: {},
       vehicle_tax: {},
+      type: {},
+      comments: {},
+      status: {},
     };
 
     this.createFee = this.createFee.bind(this);
+    this.updateFee = this.updateFee.bind(this);
+    this.getFees = this.getFees.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
+    this.toggleUpdateForm = this.toggleUpdateForm.bind(this);
     this.toggleDetails = this.toggleDetails.bind(this);
   }
 
@@ -57,7 +64,13 @@ class Fees extends Component {
   getFees() {
     axios.get(`/api/v1/fees?vehicle_id=${ this.props.match.params.vehicleId }`)
       .then(({ data: { data } }) => {
-        this.setState({ fees: data, totalFees: data.reduce((t, f) => t + +f.total_amount, 0) });
+        this.setState({
+          detailsActive: false,
+          fees: data,
+          formActive: false,
+          formUpdateActive: false,
+          totalFees: data.reduce((t, f) => t + +f.total_amount, 0),
+        });
       })
       .catch((error) => console.error(error));
   }
@@ -69,14 +82,41 @@ class Fees extends Component {
       return memo;
     }, {});
 
-    data.total_amount = _.reduce(e.target, (memo, value) =>
-      value.name === 'extra_discount' ? memo - +value.value : memo + +value.value, 0);
+    data.total_amount = _.chain(data)
+      .omit('type', 'comments', 'status')
+      .reduce((memo, value, name) =>
+        name === 'extra_discount' ? memo - +value : memo + +value, 0)
+      .value();
 
     data.vehicle_id = this.props.match.params.vehicleId;
     data.client_id = this.props.match.params.clientId;
-    JSON.stringify(data);
+
     axios.post('/api/v1/fees', data)
-      .then(response => console.warn('saved successfully', response))
+      .then(() => this.getFees())
+      .catch(error => console.error(error));
+  }
+
+  updateFee(e) {
+    const { fee } = this.state;
+    e.preventDefault();
+
+    const data = _.reduce(e.target, (memo, { name, value }) => {
+      if (value) {
+        memo[name] = value;
+      }
+      return memo;
+    }, {});
+
+    const updated = Object.assign(fee, data);
+
+    updated.total_amount = _.chain(updated)
+      .omit('created_at', 'updated_at', 'id', 'vehicle_id', 'client_id', 'total_amount')
+      .reduce((memo, value, name) => name === 'extra_discount' ? memo - +value : memo + +value, 0)
+      .value();
+
+
+    axios.put(`/api/v1/fees/${ fee.id }`, updated)
+      .then(() => this.getFees())
       .catch(error => console.error(error));
   }
 
@@ -85,7 +125,15 @@ class Fees extends Component {
   }
 
   toggleForm() {
-    this.setState({ formActive: !this.state.formActive });
+    this.setState({ formActive: !this.state.formActive, formUpdateActive: false });
+  }
+
+  toggleUpdateForm(fee) {
+    this.setState({
+      formUpdateActive: !this.state.formUpdateActive,
+      formActive: false,
+      fee,
+    });
   }
 
   togglePayment() {
@@ -114,6 +162,8 @@ class Fees extends Component {
                   key={ i }
                   fee={ fee }
                   toggleDetails={ this.toggleDetails }
+                  toggleUpdateForm={ this.toggleUpdateForm }
+                  getFees={ this.getFees }
                 />
             )}
           </tbody>
@@ -128,6 +178,14 @@ class Fees extends Component {
             questions={ this.questions }
             toggleForm={ this.toggleForm }
           /> : <button onClick={ this.toggleForm }>Add A New Fee</button>
+        }
+        {this.state.formUpdateActive ?
+          <FormContainer
+            type='Fee'
+            create={ this.updateFee }
+            questions={ this.questions }
+            toggleForm={ this.toggleUpdateForm }
+          /> : null
         }
       </div>
     );

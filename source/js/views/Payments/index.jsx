@@ -21,15 +21,18 @@ class Payments extends Component {
       totalPayments: null,
       formActive: false,
       detailsActive: false,
+      formUpdateActive: false,
     };
     this.questions = {
       type: {},
       amount: {},
     };
     this.createPayment = this.createPayment.bind(this);
+    this.updatePayment = this.updatePayment.bind(this);
     this.deletePayment = this.deletePayment.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
     this.toggleDetails = this.toggleDetails.bind(this);
+    this.toggleUpdateForm = this.toggleUpdateForm.bind(this);
   }
 
   componentDidMount() {
@@ -60,8 +63,24 @@ class Payments extends Component {
     data.vehicle_id = this.props.match.params.vehicleId;
     data.client_id = this.props.match.params.clientId;
 
-    JSON.stringify(data);
     axios.post('/api/v1/payments', data)
+      .then(response => console.warn('saved successfully', response))
+      .catch(error => console.error(error));
+  }
+
+  updatePayment(e) {
+    const { payment } = this.state;
+
+    const data = _.reduce(e.target, (memo, value) => {
+      if (value.value) {
+        memo[value.name] = value.value;
+      }
+      return memo;
+    }, {});
+
+    const updated = Object.assign(payment, data);
+
+    axios.put(`/api/v1/payments/${ payment.id }`, updated)
       .then(response => console.warn('saved successfully', response))
       .catch(error => console.error(error));
   }
@@ -78,6 +97,10 @@ class Payments extends Component {
 
   toggleForm() {
     this.setState({ formActive: !this.state.formActive });
+  }
+
+  toggleUpdateForm(payment) {
+    this.setState({ formUpdateActive: !this.state.formUpdateActive, payment });
   }
 
   render() {
@@ -113,6 +136,17 @@ class Payments extends Component {
                   Delete Payment
                 </button>
                 </td>
+                <td>
+                  <button
+                    className='btn btn-primary btn-sm'
+                    key={ payment.id }
+                    id={ payment.id }
+                    value={ payment.id }
+                    onClick={ () => this.toggleUpdateForm(payment) }
+                  >
+                  Update Payment
+                </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -126,6 +160,14 @@ class Payments extends Component {
             questions={ this.questions }
             toggleForm={ this.toggleForm }
           /> : <button onClick={ this.toggleForm }>Add A New Payment</button>
+        }
+        {this.state.formUpdateActive &&
+          <FormContainer
+            type='Payment'
+            create={ this.updatePayment }
+            questions={ this.questions }
+            toggleForm={ this.toggleUpdateForm }
+          />
         }
       </div>
     );
