@@ -10,7 +10,7 @@ import _ from 'lodash';
 import axios from 'axios';
 import FormContainer from 'components/Global/FormContainer';
 import RenderFees from 'components/Global/RenderFees';
-import FeeDetails from 'components/Fees/FeeDetails';
+import RenderDetails from 'components/Global/RenderDetails';
 
 class Fees extends Component {
 
@@ -171,7 +171,7 @@ class Fees extends Component {
         <div>Total Fees: {totalFees}</div>
         <div>Total Payments: {totalPayments}</div>
         {detailsActive &&
-          <FeeDetails
+          <RenderDetails
             fee={ _.omit(fee, 'id', 'vehicle_id', 'client_id') } 
           />
         }

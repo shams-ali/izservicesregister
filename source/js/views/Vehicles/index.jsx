@@ -9,6 +9,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import FormContainer from 'components/Global/FormContainer';
 import VehicleList from 'components/Vehicle/VehicleList';
+import RenderDetails from 'components/Global/RenderDetails';
 
 class Vehicles extends Component {
 
@@ -17,6 +18,8 @@ class Vehicles extends Component {
     this.state = {
       vehicles: [],
       formActive: false,
+      detailsActive: false,
+      vehicle: null,
     };
     this.questions = {
       vin: {
@@ -38,7 +41,9 @@ class Vehicles extends Component {
     };
 
     this.createVehicle = this.createVehicle.bind(this);
+    this.getVehicles = this.getVehicles.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
+    this.toggleDetails = this.toggleDetails.bind(this);
   }
 
   componentDidMount() {
@@ -57,18 +62,21 @@ class Vehicles extends Component {
       return memo;
     }, {});
     data.client_id = this.props.match.params.clientId;
-    JSON.stringify(data);
+
     axios.post('/api/v1/vehicles', data)
-      .then(response => console.warn('saved successfully', response))
+      .then(() => this.getVehicles())
       .catch(error => console.error(error));
   }
 
   toggleForm() {
     this.setState({ formActive: !this.state.formActive });
   }
+  toggleDetails(vehicle) {
+    this.setState({ detailsActive: true, vehicle });
+  }
 
   render() {
-    const { vehicles, formActive } = this.state;
+    const { vehicles, formActive, vehicle, detailsActive } = this.state;
     return (
       <div>
         {formActive ?
@@ -95,8 +103,15 @@ class Vehicles extends Component {
           <VehicleList
             vehicles={ vehicles }
             clientId={ +this.props.match.params.clientId }
+            toggleDetails={ this.toggleDetails }
+            getVehicles={ this.getVehicles }
           />
         </table>
+        {detailsActive &&
+          <RenderDetails
+            data={ _.omit(vehicle, 'client') }
+          />
+        }
       </div>
     );
   }
