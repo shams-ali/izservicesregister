@@ -62,7 +62,7 @@ class Clients extends Component {
   }
 
   render() {
-    const { clients } = this.props;
+    const { clients, dispatch } = this.props;
     return (
       <div>
         {this.state.addClientActive ?
@@ -85,6 +85,7 @@ class Clients extends Component {
           </thead>
           <ClientList
             clients={ clients }
+            dispatch={ dispatch }
           />
         </table>
       </div>
