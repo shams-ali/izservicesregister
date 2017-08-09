@@ -141,7 +141,7 @@ class Fees extends Component {
   }
 
   render() {
-    const { totalPayments, totalFees } = this.state;
+    const { totalPayments, totalFees, formActive, formUpdateActive, detailsActive, fee, fees } = this.state;
     return (
       <div>
         <div>Outstanding Balance: ${totalFees - totalPayments}</div>
@@ -156,11 +156,11 @@ class Fees extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.fees &&
-              this.state.fees.map((fee, i) =>
+            {fees &&
+              fees.map((item, i) =>
                 <RenderFees
                   key={ i }
-                  fee={ fee }
+                  fee={ item }
                   toggleDetails={ this.toggleDetails }
                   toggleUpdateForm={ this.toggleUpdateForm }
                   getFees={ this.getFees }
@@ -170,8 +170,12 @@ class Fees extends Component {
         </table>
         <div>Total Fees: {totalFees}</div>
         <div>Total Payments: {totalPayments}</div>
-        {this.state.detailsActive ? <FeeDetails fee={ this.state.fee } /> : null}
-        {this.state.formActive ?
+        {detailsActive &&
+          <FeeDetails
+            fee={ _.omit(fee, 'id', 'vehicle_id', 'client_id') } 
+          />
+        }
+        {formActive ?
           <FormContainer
             type='Fee'
             create={ this.createFee }
@@ -179,13 +183,13 @@ class Fees extends Component {
             toggleForm={ this.toggleForm }
           /> : <button onClick={ this.toggleForm }>Add A New Fee</button>
         }
-        {this.state.formUpdateActive ?
+        {formUpdateActive &&
           <FormContainer
             type='Fee'
             create={ this.updateFee }
             questions={ this.questions }
             toggleForm={ this.toggleUpdateForm }
-          /> : null
+          />
         }
       </div>
     );
